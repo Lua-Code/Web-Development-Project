@@ -8,7 +8,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
             <Link to="/" className="text-[#1d3557] text-lg font-bold">
-              MarketHub
+              Ventura
             </Link>
             <div className="hidden md:flex items-center gap-6">
               <Link 
@@ -21,7 +21,7 @@ export default function Navbar() {
                 to="/orders" 
                 className="text-[#1d3557] hover:text-[#457b9d] transition-colors"
               >
-                Orders
+                My Orders
               </Link>
             </div>
           </div>
@@ -38,14 +38,11 @@ export default function Navbar() {
             </a>
 
             <button className="text-[#1d3557] hover:text-[#457b9d]">
-              <Heart className="h-5 w-5" />
-            </button>
-            <button className="text-[#1d3557] hover:text-[#457b9d]">
               <User className="h-5 w-5" />
             </button>
             <button className="text-[#1d3557] hover:text-[#457b9d] relative">
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-[#e63946] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              <span className="absolute -top-3 -right-3 bg-[#e63946] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 3
               </span>
             </button>
