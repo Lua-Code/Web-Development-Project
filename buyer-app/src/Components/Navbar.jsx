@@ -11,14 +11,14 @@ export default function Navbar() {
               Ventura
             </Link>
             <div className="hidden md:flex items-center gap-6">
-              <Link 
-                to="/marketplace" 
+              <Link
+                to="/marketplace"
                 className="text-[#1d3557] hover:text-[#457b9d] transition-colors"
               >
                 Browse
               </Link>
-              <Link 
-                to="/orders" 
+              <Link
+                to="/orders"
                 className="text-[#1d3557] hover:text-[#457b9d] transition-colors"
               >
                 My Orders
@@ -28,8 +28,8 @@ export default function Navbar() {
 
           <div className="flex items-center gap-4">
             <a
-              href="http://localhost:5175/login" 
-              target="_blank" 
+              href="http://localhost:5175/login"
+              target="_blank"
               rel="noopener noreferrer"
               className="hidden md:flex bg-[#e63946] hover:bg-[#c62d3a] text-white px-4 py-2 rounded flex items-center gap-2"
             >
