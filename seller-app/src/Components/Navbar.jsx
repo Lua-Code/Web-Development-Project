@@ -10,11 +10,11 @@ const Navbar = ({ onLogout }) => {
                     <div className="flex items-center gap-3">
                         <Avatar>
                             <AvatarFallback className="bg-[#1d3557] text-white">
-                                TS
+                                TS {/*will be replace by our actual seller ;p meow*/}
                             </AvatarFallback>
                         </Avatar>
                         <div className="leading-tight">
-                            <h2 className="text-[#1d3557] font-semibold text-lg">
+                            <h2 className="text-[#1d3557] font-semibold text-lg"> {/*will be replace by our actual seller ;p meow*/}
                                 Tech Solutions
                             </h2>
                             <p className="text-sm text-[#457b9d]">Seller Account</p>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu, Heart, Store } from "lucide-react";
+import { ShoppingCart, User, Menu, Store } from "lucide-react";
 
 export default function Navbar() {
   return (
