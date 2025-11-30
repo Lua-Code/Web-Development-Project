@@ -21,7 +21,7 @@ const Hero = () => {
                 className="pl-10 bg-white border-none h-12 w-full rounded-md text-base outline-none"
               />
             </div>
-            <button className="bg-[#e63946] hover:bg-[#c62d3a] text-white h-12 px-8 rounded-md">
+            <button className="bg-[#e63946] hover:bg-[#c62d3a] text-white h-12 px-8 rounded-md cursor-pointer">
               Search
             </button>
           </div>

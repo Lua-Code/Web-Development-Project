@@ -25,7 +25,7 @@ const features = [
 
 const Badges = () => {
   return (
-    <section className="py-12 bg-[#a8dadc]/20">
+    <section className="py-12 bg-[#a8dadc]/30">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature) => (
@@ -34,8 +34,8 @@ const Badges = () => {
                 <feature.icon className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h4 className="text-[#1d3557]">{feature.title}</h4>
-                <p className="text-[#457b9d]">{feature.description}</p>
+                <h4 className="text-[#1d3557] mb-0">{feature.title}</h4>
+                <p className="text-[#457b9d] mb-0">{feature.description}</p>
               </div>
             </div>
           ))}
