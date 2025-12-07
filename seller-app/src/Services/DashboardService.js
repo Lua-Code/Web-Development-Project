@@ -1,3 +1,5 @@
+import DashboardPage from "../Pages/DashboardPage";
+
 const getTabPath = (tabName) => {
     switch(tabName) {
         case "Dashboard":
@@ -15,4 +17,4 @@ const getTabPath = (tabName) => {
     }
 };
 
-export default getTabPath
+export {getTabPath} 

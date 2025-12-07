@@ -2,7 +2,7 @@ function RecentOrderItem({ product, buyer, price, status }) {
     const isPending = status === "Pending";
 
     return (
-        <div className="bg-white rounded-xl p-4 flex justify-between items-center">
+        <div className="bg-white p-4 flex justify-between items-center border-b">
             <div>
                 <p className="font-medium text-[#1D3557]">{product}</p>
                 <p className="text-sm text-gray-500 text-left">{buyer}</p>

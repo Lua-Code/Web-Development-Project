@@ -49,7 +49,7 @@ function DashboardPage() {
 
             </div>
 
-            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-10">
 
                 <div className="bg-white rounded-xl p-6">
                     <h3 className="mb-4 font-semibold text-lg text-[#1D3557]">Recent Orders</h3>

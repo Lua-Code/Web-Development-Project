@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import  getTabPath  from "../Services/DashboardService"; // fixed import
+import {getTabPath}  from "../Services/DashboardService"; // fixed import
 
 const MainLayout = () => {
     const tabs = ["Dashboard", "My Products", "Orders", "Analytics", "Settings"];
