@@ -4,7 +4,8 @@ import AuthLayout from "./Layouts/AuthLayout";
 import HomePage from "./Pages/HomePage";
 import BrowsePage from "./Pages/BrowsePage";
 import OrderManagement from "./Pages/MyOrdersPage";
-import LoginPage from "./Pages/LoginPage"
+import LoginPage from "./Pages/LoginPage";
+
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/marketplace" element={<BrowsePage />} />
           <Route path="/orders" element={<OrderManagement />} />
+          
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
