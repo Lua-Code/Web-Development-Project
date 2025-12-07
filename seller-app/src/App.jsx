@@ -5,11 +5,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css'
 
 import MainLayout from './Layouts/MainLayout';
+import AuthLayout from './Layouts/AuthLayout';
+
+import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
 import DashboardPage from './Pages/DashboardPage'
 import MyProductsPage from './Pages/MyProductsPage'
 import OrdersPage from './Pages/OrdersPage'
 import AnalyticsPage from './Pages/AnalyticsPage'
 import SettingsPage from './Pages/SettingsPage'
+
 
 function App() {
 
@@ -22,6 +27,10 @@ function App() {
           <Route path="/Orders" element={<OrdersPage />} />
           <Route path="/Analytics" element={<AnalyticsPage />} />
           <Route path="/Settings" element={<SettingsPage />} />
+        </Route>
+        <Route element = {<AuthLayout/>}>
+          <Route path="/login" element = {<LoginPage/>}/>
+          <Route path="/register" elemenet = {<RegisterPage/>}/>
         </Route>
       </Routes>
     </Router>
