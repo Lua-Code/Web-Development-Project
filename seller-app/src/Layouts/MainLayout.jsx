@@ -8,7 +8,7 @@ const MainLayout = () => {
         window.location.href = 'http://localhost:5173/'; /* should be replaced by za buyer URL */
     }
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen bg-[#a8dadc]">
             <Navbar onLogout = {handleLogout} />
             <main className="flex-1">
                 <Outlet />
