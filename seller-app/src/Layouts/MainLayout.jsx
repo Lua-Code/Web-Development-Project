@@ -13,9 +13,9 @@ const MainLayout = () => {
     };
 
     const tabClass = (path) =>
-        `flex items-center gap-2 px-4 py-2 rounded-full cursor-pointer text-sm transition ${
+        `flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm transition ${
             location.pathname === path
-                ? "bg-white shadow font-medium text-[#1D3557]"
+                ? "bg-[#d1d1d1] shadow font-medium text-[#1D3557]"
                 : "text-gray-500 hover:bg-[#F1F1F1]"
         }`;
 
@@ -26,7 +26,7 @@ const MainLayout = () => {
             <div className="min-h-screen bg-[#F1FAEE] py-4 px-6">
                 {/* NAV TABS */}
                 <div className="px-6 mt-5">
-                    <div className="flex gap-2 bg-white rounded-full px-2 py-1 w-fit shadow">
+                    <div className="flex gap-2   bg-white rounded-xl  p-1  w-fit shadow">
                         <button
                             onClick={() => navigate(getTabPath("Dashboard"))}
                             className={tabClass(getTabPath("Dashboard"))}
