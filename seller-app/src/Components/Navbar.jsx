@@ -23,7 +23,7 @@ const Navbar = ({ onLogout }) => {
 
                     <button
                         onClick={onLogout}
-                        className="flex items-center gap-2 text-[#e63946] hover:text-[#d62839] font-medium transition cursor-pointer"
+                        className="flex items-center gap-2 border bg-[#f1faee] border-[#457b9d] rounded-sm p-1 px-2 text-[#457b9d] hover:text-[#ffffff] hover:bg-[#e63946] font-medium transition cursor-pointer"
                     >
                         <LogOut size={18} />
                         Logout
