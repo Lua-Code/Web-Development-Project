@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Store, ArrowLeft } from "lucide-react";
 
 const LoginPage = () => {
-    const [role, setRole] = useState("seller");
 
     return (
         <div>
