@@ -1,6 +1,7 @@
 import { useState } from "react";
 import RecentOrderItem from "../Components/Dashboard/RecentOrderItem";
 import TopSellingProductItem from "../Components/Dashboard/TopSellingProductItem";
+import StatsCard from "../Components/Dashboard/StatsCard";
 import { Box, DollarSignIcon, ChartArea, Star, Eye, Hourglass } from "lucide-react";
 
 
@@ -18,31 +19,13 @@ function DashboardPage() {
         <>
             {/* CARDS */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-150 w-full">
-                {cards.map((c) => {
-                    const Icon = c.icon;
+                {cards.map((c, index) => {
                     const isRedCard = ["Total Revenue", "Avg. Rating", "Pending Orders"].includes(c.title);
                     const circleColor = isRedCard ? "#efafb4ff" : "#A8DADC"; // circle background
                     const iconColor = isRedCard ? "#b30808ff" : "#1D3557"; // icon color
 
                     return (
-                        <div
-                            key={c.title}
-                            className="bg-white rounded-xl p-6 flex flex-col items-start gap-6  "
-                        >
-                            {/* ICON CIRCLE */}
-                            <div
-                                className="w-10 h-10 rounded-full flex items-center justify-center"
-                                style={{ backgroundColor: circleColor }}
-                            >
-                                <Icon size={25} style={{ color: iconColor }} />
-                            </div>
-
-                            {/* TITLE */}
-                            <p className="text-lg" style={{ color: "#1a4d95ff" }}>{c.title}</p>
-
-                            {/* VALUE */}
-                            <p className="text-2xl font-semibold text-[#1D3557]">{c.value}</p>
-                        </div>
+                        <StatsCard key={index} Icon={c.icon} title={c.title} value={c.value} IconColor={iconColor} CircleColor={circleColor} />
                     );
                 })}
 
@@ -77,6 +60,8 @@ function DashboardPage() {
 }
 
 export default DashboardPage
+
+
 
 
 

@@ -1,9 +1,19 @@
-function StatsCard({ line, value, red }) {
+function StatsCard({ title, value, Icon, IconColor, CircleColor }) {
     return (
-        <div className="flex justify-between py-2 text-sm border-b last:border-none">
-            <span className="text-gray-500">{line}</span>
-            <span className={red ? "text-[#E63946]" : "text-[#1D3557]"}>{value}</span>
+        <div className="bg-white rounded-xl p-6 flex flex-col items-start gap-15">
+            
+            <div
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ backgroundColor: CircleColor }}
+            >
+                <Icon size={25} style={{ color: IconColor }} />
+            </div>
+
+            <p className="text-lg text-[#457b9d]">{title}</p>
+
+            <p className="text-2xl font-semibold text-[#1D3557]">{value}</p>
         </div>
     );
 }
-export default StatsCard 
+
+export default StatsCard;
