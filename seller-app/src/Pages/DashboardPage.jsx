@@ -58,7 +58,7 @@ function DashboardHome() {
     return (
         <>
             {/* CARDS */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-150 w-600">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 h-150 w-full">
                 {cards.map((c) => {
                     const Icon = c.icon;
                     const isRedCard = ["Total Revenue", "Avg. Rating", "Pending Orders"].includes(c.title);
