@@ -16,7 +16,7 @@ const MainLayout = () => {
         <div className="flex flex-col min-h-screen bg-[#f1faee]">
             <Navbar onLogout={handleLogout} />
 
-            <div className="min-h-screen bg-[#F1FAEE]">
+            <div className="min-h-screen bg-[#F1FAEE] py-4 px-6">
                 {/* NAV TABS */}
                 <div className="px-6 mt-5">
                     <div className="flex gap-2 bg-white rounded-full px-2 py-1 w-fit shadow">
@@ -36,7 +36,7 @@ const MainLayout = () => {
                 </div>
 
                 {/* PAGE CONTENT */}
-                <main className="flex-1 p-6">
+                <main className="flex-1 p-7">
                     <Outlet />
                 </main>
             </div>
