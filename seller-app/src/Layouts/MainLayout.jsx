@@ -24,7 +24,7 @@ const MainLayout = () => {
                             <button
                                 key={t}
                                 onClick={() => navigate(getTabPath(t))}
-                                className={`px-4 py-2 rounded-full text-sm transition ${location.pathname === getTabPath(t)
+                                className={`px-4 py-2 rounded-full cursor-pointer text-sm transition ${location.pathname === getTabPath(t)
                                         ? "bg-white shadow font-medium text-[#1D3557]"
                                         : "text-gray-500 hover:bg-[#F1F1F1]"
                                     }`}
