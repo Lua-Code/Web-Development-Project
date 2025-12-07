@@ -21,6 +21,7 @@ const AnalyticsPage = () => {
     const categories = [
         { category: "Electronics", revenue: "1049.98", percentage: "85.6" },
         { category: "Fashion", revenue: "180.00", percentage: "14.4" },
+        
 
     ]
 
