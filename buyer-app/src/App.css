@@ -38,3 +38,155 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Settings Styling */
+
+.settings-container {
+  display: flex;
+  height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.left-side {
+  width: 250px;
+  border-right: 1px solid #ddd;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  color: #191717;
+  font-size: 15px;
+  transition: background 0.2s ease;
+}
+
+.sidebar-item:hover {
+  background: #f0f0f0;
+}
+
+.sidebar-item.active {
+  background: #db362a;
+  color: white;
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+.sidebar-item.logout {
+  margin-top: auto;
+  background-color: #ff4d4f;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.sidebar-item.logout:hover {
+  background-color: #e04344;
+}
+
+.middle-content {
+  flex: 1;
+  padding: 40px;
+}
+
+.settings-card {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+}
+
+.settings-card h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+/* ROW STYLE */
+.settings-row {
+  padding: 14px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+}
+
+.settings-row:hover {
+  color: #537ba7;
+}
+
+/* Register Page Styling */
+
+.register-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #457b9d, #1d3557);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.register-card {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 30px 35px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.register-card h1 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 24px;
+  color: #1d3557;
+}
+
+/* Form */
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-form input {
+  height: 46px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  padding: 0 14px;
+  font-size: 14px;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-form input:focus {
+  outline: none;
+  border-color: #457b9d;
+  box-shadow: 0 0 0 2px rgba(69,123,157,0.15);
+}
+
+.register-form button {
+  margin-top: 10px;
+  height: 48px;
+  border-radius: 10px;
+  border: none;
+  background: #e63946;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.05s ease;
+}
+
+.register-form button:hover {
+  background: #c62d3a;
+}
+
+.register-form button:active {
+  transform: scale(0.98);
+}
