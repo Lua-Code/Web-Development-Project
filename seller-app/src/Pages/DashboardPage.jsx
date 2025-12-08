@@ -28,7 +28,7 @@ function DashboardPage() {
                         <StatsCard key={index} Icon={c.icon} title={c.title} value={c.value} IconColor={iconColor} CircleColor={circleColor} />
                     );
                 })}
-
+                <></>
 
             </div>
 
