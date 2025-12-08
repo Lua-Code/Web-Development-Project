@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShoppingCart, User, Menu, Store } from "lucide-react";
+import { ShoppingCart, User, Menu, Store , Settings } from "lucide-react";
 
 export default function Navbar() {
   return (
@@ -40,12 +40,29 @@ export default function Navbar() {
             <button className="text-[#1d3557] hover:text-[#457b9d] cursor-pointer">
               <User className="h-5 w-5" />
             </button>
+
             <button className="text-[#1d3557] hover:text-[#457b9d] relative cursor-pointer">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-3 -right-3 bg-[#e63946] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 3
               </span>
-            </button>
+              </button>
+
+              <Link
+                 to="/settings"
+                  className="text-[#1d3557] hover:text-[#457b9d] cursor-pointer"
+                   >
+                   <Settings className="h-5 w-5" />
+                    </Link>
+
+              <Link
+            to="/register"
+            className="bg-[#457b9d] hover:bg-[#1d3557] text-white px-4 py-2 rounded font-medium"
+            >
+              Sign Up
+            </Link>
+
+            
             <button className="md:hidden text-[#1d3557]">
               <Menu className="h-5 w-5" />
             </button>
