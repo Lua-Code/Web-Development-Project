@@ -5,7 +5,8 @@ import HomePage from "./Pages/HomePage";
 import BrowsePage from "./Pages/BrowsePage";
 import OrderManagement from "./Pages/MyOrdersPage";
 import LoginPage from "./Pages/LoginPage";
-
+import SettingsPage from "./Pages/SettingsPage";
+import RegisterPage from "./Pages/RegisterPage";
 
 function App() {
   return (
@@ -15,10 +16,12 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/marketplace" element={<BrowsePage />} />
           <Route path="/orders" element={<OrderManagement />} />
-          
+          <Route path="/settings" element={<SettingsPage />} />
+
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
         </Route>
       </Routes>
     </Router>
