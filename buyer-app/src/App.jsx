@@ -7,6 +7,7 @@ import OrderManagement from "./Pages/MyOrdersPage";
 import LoginPage from "./Pages/LoginPage";
 import SettingsPage from "./Pages/SettingsPage";
 import RegisterPage from "./Pages/RegisterPage";
+import ProductPage from "./Pages/ProductPage";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route path="/marketplace" element={<BrowsePage />} />
           <Route path="/orders" element={<OrderManagement />} />
           <Route path="/settings" element={<SettingsPage />} />
-
+          <Route path="/product/:id" element={<ProductPage />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />
