@@ -1,3 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {} = require("../controllers/conversationController");
+//const {} = require("../controllers/conversationController");
+
+// Export router
+module.exports = router;
