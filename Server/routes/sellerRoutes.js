@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
-//const {} = require("../controllers/sellerController");
+import * as sellerController from "../controllers/sellerController";
+
+//Get Seller Analytics
+router.get("/analytics/:sellerId", sellerController.getSellerAnalytics);
+
 
 // Export router
-module.exports = router;
+export default router;

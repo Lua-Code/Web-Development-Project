@@ -2,6 +2,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const session = require("express-session");
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
@@ -11,12 +12,17 @@ const app = express();
 
 // Middleware
 app.use(morgan("dev"));      
-app.use(cors());             
+app.use(cors({ origin: true, credentials: true }));          
 app.use(express.json());    
+app.use(session({
+  secret: "meowSecret", 
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session
+}));
 
-// Routes
-app.use("/api/users", userRoutes);
-app.use("/api/listings", listingRoutes);
+//mount Mainline route
+app.use("/api", routes); 
 
 // 404 handler
 app.use((req, res, next) => {
@@ -29,4 +35,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Server error" });
 });
 
-module.exports = app;
+export default app;
