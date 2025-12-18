@@ -10,7 +10,8 @@ const ListingSchema = new mongoose.Schema({
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   condition: String, // new, used, refurbished
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
+  status : { type: String, enum: ["active", "inactive", "sold"], default: "active" }
 });
 
 module.exports = mongoose.model("Listing", ListingSchema);
