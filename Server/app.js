@@ -18,7 +18,7 @@ app.use(session({
   secret: "meowSecret", 
   resave: false,
   saveUninitialized: false,
-  cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session
+  cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session meow meow
 }));
 
 //mount Mainline route
