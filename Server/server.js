@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI || 
-  'mongodb+srv://kevin_david:russianbias@meowcluster.zlqmwpu.mongodb.net/myDatabase?retryWrites=true&w=majority';
+  'mongodb+srv://kevin_david:russianbias@meowcluster.zlqmwpu.mongodb.net/marketplaceDB?retryWrites=true&w=majority';
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI)
