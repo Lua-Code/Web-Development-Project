@@ -106,4 +106,9 @@ const deleteUser = async (req, res) => {
 export default {
     getUserProfile,
     updateUserProfile,
+    getUsers,
+    getUserById,
+    createUser,
+    updateUser,
+    deleteUser
 };
