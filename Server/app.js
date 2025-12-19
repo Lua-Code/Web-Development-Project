@@ -1,4 +1,5 @@
 // app.js
+import orderRoutes from "./routes/orderRoutes.js";
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
@@ -26,7 +27,10 @@ app.get("/products", (req, res) => {
   res.redirect(307, "/api/listings");
 });
 
-////////
+////////addedmyorder////////
+// Buyer app compatibility: allow /orders without /api
+app.use("/orders", orderRoutes);
+
 
 //mount Mainline route
 app.use("/api", routes); 

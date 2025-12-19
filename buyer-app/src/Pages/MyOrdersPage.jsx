@@ -8,7 +8,9 @@ function MyOrdersPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:5000/orders") 
+        //addedfor myorders
+       fetch("http://localhost:5000/orders", { credentials: "include" })
+        /////////////
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch orders");
                 return res.json();
