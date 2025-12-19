@@ -1,4 +1,4 @@
-function TopSellingProductItem({ title, sales, price }) {
+function TopSellingProductItem({ title = "N/A", sales = 0, price = 0 }) {
     return (
         <div className="bg-white border-b p-4 flex justify-between items-center">
             <div>

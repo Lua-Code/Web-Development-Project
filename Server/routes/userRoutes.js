@@ -2,6 +2,9 @@ import express from "express";
 const router = express.Router();
 import bcryptjs from "bcryptjs";
 import User from "../models/User.js";
+import authMiddleware from "../middleware/authMiddleware.js";
+
+import { getProfile, updateProfile } from "../controllers/userController.js";
 //const {} = require("../controllers/userController");
 
 router.post("/register", async (req, res) => {
@@ -35,6 +38,10 @@ router.post("/register", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+router.get("/profile", authMiddleware, getProfile);
+router.put("/profile", authMiddleware, updateProfile);
+router.get("/me", authMiddleware, getProfile);
 
 
 // Export router

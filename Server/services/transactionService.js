@@ -1,8 +1,12 @@
 import Transaction from "../models/Transaction.js";
 
 const getTotalRevenueBySeller = async (sellerId) => {
-  const transactions = await Transaction.find({ sellerId, status: "completed" });
-  return transactions.reduce((sum, t) => sum + t.amount, 0);
+  const result = await Transaction.aggregate([
+    { $match: { sellerId, status: "completed" } },
+    { $group: { _id: null, total: { $sum: "$amount" } } }
+  ]);
+
+  return result[0]?.total || 0;
 };
 
 const getRevenueByCategoryForSeller = async (sellerId) => {
@@ -10,6 +14,7 @@ const getRevenueByCategoryForSeller = async (sellerId) => {
     path: "orderId",
     populate: { path: "items.listingId", select: "categoryId" },
   });
+  console.log("Transactions:", JSON.stringify(transactions, null, 2));
 
   const revenueMap = {};
 

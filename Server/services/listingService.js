@@ -9,6 +9,12 @@ const getListingsStatsBySeller = async (sellerId) => {
   };
 };
 
+const getActiveListingsCountBySeller = async (sellerId) => {
+  const activeListingsCount = await Listing.countDocuments({ sellerId, status: "Active" });
+  return activeListingsCount;
+};
+
+
 
 //added//////////////////////////////////
 // Buyer Browse: get public listings for the browse page
@@ -34,4 +40,4 @@ const getBrowseListings = async () => {
 };
 
 //export default { getListingStats };
-export default { getListingsStatsBySeller, getBrowseListings };
+export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller };
