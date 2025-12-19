@@ -7,10 +7,26 @@ const[email,setemail]=useState("");
 const[password,setpassword]=useState("");
 const[confirmpassword,setconfirmpassword]=useState("")
 
-const handlesubmit = (e) =>{
-    e.preventDefault();
-    console.log(name, email, password, confirmpassword);
-}
+const handlesubmit = async (e) => {
+  e.preventDefault();
+
+  const res = await fetch("http://localhost:5000/api/users/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+      confirmpassword
+    })
+  });
+
+  const data = await res.json();
+  console.log(data);
+};
+
 
 return(
 <div className="register-wrapper">
