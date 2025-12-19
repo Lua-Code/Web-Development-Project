@@ -1,9 +1,10 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-import * as sellerController from "../controllers/sellerController";
+import authMiddleware from "../middleware/authMiddleware.js";   
+import * as sellerController from "../controllers/sellerController.js";
 
 //Get Seller Analytics
-router.get("/analytics/:sellerId", sellerController.getSellerAnalytics);
+router.get("/analytics", authMiddleware, sellerController.getSellerAnalytics); 
 
 
 // Export router
