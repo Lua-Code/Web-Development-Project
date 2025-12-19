@@ -17,6 +17,7 @@ import CartPage from "./Pages/CartPage";
 import CheckoutPage from "./Pages/CheckoutPage";
 import OrderDetailsPage from "./Pages/OrderDetailsPage";
 import MyOrdersPage from "./Pages/MyOrdersPage";
+import ProfilePage from "./Pages/ProfilePage";
 
 
 function App() {
@@ -33,6 +34,8 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order/:id" element={<OrderDetailsPage />} />
           <Route path="/my-orders" element={<MyOrdersPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<LoginPage />} />

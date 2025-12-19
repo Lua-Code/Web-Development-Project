@@ -84,11 +84,15 @@ export default function Navbar() {
               Start Selling
             </a>
 
-            <button className="text-[#1d3557] hover:text-[#457b9d] cursor-pointer">
+            <Link
+            to="/profile"
+            className="text-[#1d3557] hover:text-[#457b9d] cursor-pointer">
               <User className="h-5 w-5" />
-            </button>
+            </Link>
 
-            <Link className="text-[#1d3557] hover:text-[#457b9d] relative cursor-pointer">
+            <Link 
+            to="/cart"
+            className="text-[#1d3557] hover:text-[#457b9d] relative cursor-pointer">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-3 -right-3 bg-[rgb(230,57,70)] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 3
@@ -121,14 +125,14 @@ export default function Navbar() {
 
 
 
-
+            {currentUser ? null : (
             <Link
               to="/register"
               className="bg-[rgb(229,37,53)] hover:bg-[rgb(230,57,70)] text-white px-4 py-2 rounded font-medium"
             >
               Sign Up
             </Link>
-
+            )}
 
             <button className="md:hidden text-[#1d3557]">
               <Menu className="h-5 w-5" />

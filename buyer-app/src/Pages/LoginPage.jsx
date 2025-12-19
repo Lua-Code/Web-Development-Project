@@ -47,9 +47,11 @@ const LoginPage = () => {
     return (
         <div>
             <div className="w-full">
-                <button className="text-white hover:bg-white/10 mb-4 cursor-pointer rounded-md px-5 py-1 flex items-center">
+                <Link
+                to="/"
+                className="text-white hover:bg-white/10 mb-4 cursor-pointer rounded-md px-5 py-1 flex items-center">
                     <ArrowLeft className="h-4 w-4 mr-2" /> Back to Home
-                </button>
+                </Link>
             </div>
 
             <div className="bg-white text-gray-800 flex flex-col gap-6 rounded-xl border p-6 w-100 ">
@@ -103,11 +105,11 @@ const LoginPage = () => {
 
                     <p className="text-center text-sm">
                         Don’t have a buyer account?{" "}
-                        <a 
-                        href = "" //link to buyer registration page
+                        <Link 
+                        href = "/register"
                         className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
                             Sign up as buyer
-                        </a>
+                        </Link>
                     </p>
 
                 </div>

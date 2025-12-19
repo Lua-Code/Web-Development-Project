@@ -1,5 +1,5 @@
-function RecentOrderItem({ product, buyer, price, status }) {
-    const isPending = status === "Pending";
+function RecentOrderItem({ product = "N/A", buyer = "N/A", price = 0, status = "Unknown" }) {
+    const isPending = status.toLowerCase() === "pending";
 
     return (
         <div className="bg-white p-4 flex justify-between items-center border-b">
