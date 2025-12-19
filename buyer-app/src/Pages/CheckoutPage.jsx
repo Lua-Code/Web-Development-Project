@@ -11,7 +11,9 @@ function CheckoutPage() {
     const [paymentMethod, setPaymentMethod] = useState("cash");
 
     useEffect(() => {
-        fetch("http://localhost:5000/cart") 
+        //new
+        fetch("http://localhost:5000/cart", { credentials: "include" })
+        ////
             .then(res => {
                 if (!res.ok) throw new Error("Failed to fetch cart items");
                 return res.json();
@@ -35,6 +37,8 @@ function CheckoutPage() {
         fetch("http://localhost:5000/orders", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+  /*the new part*/ 
+            credentials: "include",
             body: JSON.stringify({
                 items: cartItems,
                 address,
