@@ -1,7 +1,17 @@
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+import User from "../models/User.js";
 
-exports.getUsers = async (req, res) => {
+const getUserProfile = async(userId) => {
+    const user = await User.findById(userId);
+    return user;
+};
+
+
+const updateUserProfile = async(userId, data) => {
+    const updatedUser = await User.findByIdAndUpdate(userId, data, {new: true});
+    return updatedUser;
+};
+
+const getUsers = async (req, res) => {
   try {
     const users = await User.find().select("-password");
     res.json(users);
@@ -9,7 +19,8 @@ exports.getUsers = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-exports.getUserById = async (req, res) => {
+
+const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
 
@@ -23,7 +34,7 @@ exports.getUserById = async (req, res) => {
   }
 };
 
-exports.createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
@@ -55,12 +66,11 @@ exports.createUser = async (req, res) => {
   }
 };
 
-
-exports.updateUser = async (req, res) => {
+const updateUser = async (req, res) => {
   try {
     const updates = { ...req.body };
 
-    
+
     delete updates.password;
 
     const user = await User.findByIdAndUpdate(
@@ -79,8 +89,7 @@ exports.updateUser = async (req, res) => {
   }
 };
 
-
-exports.deleteUser = async (req, res) => {
+const deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
 
@@ -92,4 +101,9 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: "Invalid user ID" });
   }
+};
+
+export default {
+    getUserProfile,
+    updateUserProfile,
 };
