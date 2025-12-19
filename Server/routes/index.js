@@ -13,7 +13,7 @@ import authRoutes from "./authRoutes.js";
 
 // Mount routers
 router.use("/users", userRoutes);
-router.use("/sellers", sellerRoutes);
+router.use("/seller", sellerRoutes);
 router.use("/listings", listingRoutes);
 router.use("/orders", orderRoutes);
 router.use("/reviews", reviewRoutes);

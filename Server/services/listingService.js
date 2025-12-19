@@ -1,16 +1,13 @@
 import Listing from "../models/Listing.js";
 
-const getListingStats = async (sellerId) => {
-    const totalLisings = await Listing.countDocuments({ sellerId });
-    const activeListings = await Listing.countDocuments({ sellerId, status: "active" });
+const getListingsStatsBySeller = async (sellerId) => {
+  const listings = await Listing.find({ sellerId });
 
-    return {
-        totalLisings,
-        activeListings,
-        TotalViews:0,
-        avgViewsPerListing:0
-    };
-}
+  return {
+    totalListings: listings.length,
+    activeListings: listings.filter((l) => l.status === "Active").length,
+  };
+};
 
 
 //added//////////////////////////////////
@@ -37,4 +34,4 @@ const getBrowseListings = async () => {
 };
 
 //export default { getListingStats };
-export default { getListingStats, getBrowseListings };
+export default { getListingsStatsBySeller, getBrowseListings };

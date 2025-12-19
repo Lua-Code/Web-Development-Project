@@ -1,45 +1,32 @@
 import Transaction from "../models/Transaction.js";
-import Order from "../models/Order.js";
 
-const getTransactionStatsBySeller = async (sellerId) => {
-  const response = await Transaction.aggregate([
-    { $match: { sellerId: mongoose.Types.ObjectId(sellerId), status: "completed" } },
-    {$group: { _id : null, totalAmount: { $sum: "$amount" } } },
-  ]);
-  return response[0]?.amount || 0;
+const getTotalRevenueBySeller = async (sellerId) => {
+  const transactions = await Transaction.find({ sellerId, status: "completed" });
+  return transactions.reduce((sum, t) => sum + t.amount, 0);
 };
 
+const getRevenueByCategoryForSeller = async (sellerId) => {
+  const transactions = await Transaction.find({ sellerId, status: "completed" }).populate({
+    path: "orderId",
+    populate: { path: "items.listingId", select: "categoryId" },
+  });
 
-const getTotalRevenueByCategory = async (sellerId) => {
-    return await Order.aggregate([
-        { $match: { sellerId: mongoose.Types.ObjectId(sellerId), status: "Completed" } },
-        {$unwind: "$items" },
-        { $lookup: {
-                from: "listings",
-                localField: "items.listingId",
-                foreignField: "_id",
-                as: "listingDetails"
-            }
-        },
-        { $group : {
-            _id: "$listingDetails.categoryId",
-            revenue : {sum : {$multiply: ["$items.price", "$items.quantity"]}}
+  const revenueMap = {};
 
-        }},
-        {$lookup: {
-                from: "categories",
-                localField: "_id",
-                foreignField: "_id",
-                as: "categoryDetails"
-            }
-        },
-        {$unwind: "$categoryDetails"},
-        { $project: {
-                _id: 0,
-                category: "$categorydetails.name",
-                revenue: 1
-            }
-        }
-    ]);
+  transactions.forEach((tx) => {
+    tx.orderId.items.forEach((item) => {
+      const catId = item.listingId.categoryId.toString();
+      if (!revenueMap[catId]) revenueMap[catId] = 0;
+      revenueMap[catId] += item.price * item.quantity;
+    });
+  });
+
+  const revenueByCategory = Object.keys(revenueMap).map((catId) => ({
+    category: catId, 
+    revenue: revenueMap[catId],
+  }));
+
+  return revenueByCategory;
 };
-export default { getTransactionStatsBySeller, getTotalRevenueByCategory };
+
+export default { getTotalRevenueBySeller, getRevenueByCategoryForSeller };
