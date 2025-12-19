@@ -19,6 +19,15 @@ app.use(session({
   cookie: { httpOnly: true, maxAge: 1000 * 60 * 60 } // 1 hour session meow meow
 }));
 
+//added///////////////////
+// Buyer app currently calls GET /products
+// Redirect it to the real route: GET /api/listings
+app.get("/products", (req, res) => {
+  res.redirect(307, "/api/listings");
+});
+
+////////
+
 //mount Mainline route
 app.use("/api", routes); 
 
