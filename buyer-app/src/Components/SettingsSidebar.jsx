@@ -1,6 +1,6 @@
 import React from "react";
 
-const SettingsSidebar = ({ activesection, setactivesection, handleLogout }) => {
+const SettingsSidebar = ({ activesection, setactivesection }) => {
   return (
     <aside className="left-side">
       <div
@@ -22,10 +22,6 @@ const SettingsSidebar = ({ activesection, setactivesection, handleLogout }) => {
         onClick={() => setactivesection("security")}
       >
         Security
-      </div>
-
-      <div className="sidebar-item logout" onClick={handleLogout}>
-        Log Out
       </div>
     </aside>
   );
