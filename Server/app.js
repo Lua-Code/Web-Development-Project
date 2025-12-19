@@ -1,12 +1,10 @@
 // app.js
-const express = require("express");
-const morgan = require("morgan");
-const cors = require("cors");
-const session = require("express-session");
+import express from "express";
+import morgan from "morgan";
+import cors from "cors";
+import session from "express-session";  
 
-// Import routes
-const userRoutes = require("./routes/userRoutes");
-const listingRoutes = require("./routes/listingRoutes");
+import routes from "./routes/index.js"; // Mainline routes
 
 const app = express();
 

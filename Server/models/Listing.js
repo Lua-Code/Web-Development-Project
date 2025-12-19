@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ListingSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "Seller", required: true },
@@ -14,4 +14,4 @@ const ListingSchema = new mongoose.Schema({
   status : { type: String, enum: ["active", "inactive", "sold"], default: "active" }
 });
 
-module.exports = mongoose.model("Listing", ListingSchema);
+export default mongoose.model("Listing", ListingSchema);

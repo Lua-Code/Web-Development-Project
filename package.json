@@ -1,7 +1,12 @@
 {
+  "name": "web-development-project",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "express": "^5.2.1",
+    "express-session": "^1.18.2",
     "mongoose": "^9.0.1",
     "morgan": "^1.10.1"
   }

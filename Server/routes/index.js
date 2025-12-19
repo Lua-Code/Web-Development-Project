@@ -1,15 +1,15 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const userRoutes = require("./userRoutes");
-const sellerRoutes = require("./sellerRoutes");
-const listingRoutes = require("./listingRoutes");
-const orderRoutes = require("./orderRoutes");
-const reviewRoutes = require("./reviewRoutes");
-const conversationRoutes = require("./conversationRoutes");
-const messageRoutes = require("./messageRoutes");
-const transactionRoutes = require("./transactionRoutes");
-const authRoutes = require("./authRoutes");
+import userRoutes from "./userRoutes.js";
+import sellerRoutes from "./sellerRoutes.js";
+import listingRoutes from "./listingRoutes.js";
+import orderRoutes from "./orderRoutes.js";
+import reviewRoutes from "./reviewRoutes.js";
+import conversationRoutes from "./conversationRoutes.js";
+import messageRoutes from "./messageRoutes.js";
+import transactionRoutes from "./transactionRoutes.js";
+import authRoutes from "./authRoutes.js";
 
 // Mount routers
 router.use("/users", userRoutes);
@@ -22,4 +22,4 @@ router.use("/messages", messageRoutes);
 router.use("/transactions", transactionRoutes);
 router.use("/auth", authRoutes);
 
-module.exports = router;
+export default router;

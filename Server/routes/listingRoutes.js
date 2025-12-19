@@ -1,6 +1,6 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 //const {} = require("../controllers/listingController");
 
 // Export router
-module.exports = router;
+export default router;
