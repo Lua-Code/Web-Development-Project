@@ -1,7 +1,48 @@
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Store, ArrowLeft } from "lucide-react";
 
 const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+    const handleLogin = async () => {
+        setError(null);
+        setLoading(true);
+
+        try {
+            const res = await fetch("http://localhost:5000/api/auth/seller-login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "include", // 🔑 session cookie
+                body: JSON.stringify({
+                    email, // backend expects email
+                    password
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                throw new Error(data.message || "Login failed");
+            }
+
+            // login successful
+            console.log("Logged in:", data);
+            navigate("/");
+
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div>
@@ -17,8 +58,9 @@ const LoginPage = () => {
                 </div>
 
                 <h1 className="text-[#1d3557] text-center text-xl">Welcome to MarketHub</h1>
-                <p className="text-[#457b9d] text-center -mt-3">Sign in to start buying or selling</p>
-
+                <p className="text-[#457b9d] text-center -mt-3">
+                    Sign in to start buying or selling
+                </p>
 
                 <div className="flex flex-col gap-4 mt-2">
                     <div className="flex flex-col">
@@ -27,6 +69,8 @@ const LoginPage = () => {
                             type="email"
                             placeholder="seller@example.com"
                             className="border rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#457b9d]"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </div>
 
@@ -36,18 +80,43 @@ const LoginPage = () => {
                             type="password"
                             placeholder="************"
                             className="border rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#457b9d]"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
 
-                    <button className="text-[#e53948] hover:text-[#ec606c] text-sm text-left cursor-pointer">Forgot password?</button>
+                    {error && (
+                        <p className="text-red-500 text-sm text-left">{error}</p>
+                    )}
 
-                    <button className="bg-[#e53948] hover:bg-[#ec606c] text-white py-2 rounded-md font-medium cursor-pointer">
-                        Sign in
+                    <button className="text-[#e53948] hover:text-[#ec606c] text-sm text-left cursor-pointer">
+                        Forgot password?
+                    </button>
+
+                    <button
+                        onClick={handleLogin}
+                        disabled={loading}
+                        className="bg-[#e53948] hover:bg-[#ec606c] text-white py-2 rounded-md font-medium cursor-pointer"
+                    >
+                        {loading ? "Signing in..." : "Sign in"}
                     </button>
 
                     <p className="text-center text-sm">
-                        Don’t have an account?{" "}
-                        <span className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">Sign up</span>
+                        Don’t have a buyer account?{" "}
+                        <a 
+                        href = "" //link to buyer registration page
+                        className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
+                            Sign up as buyer
+                        </a>
+                    </p>
+
+                    <p className="text-center text-sm">
+                        Don’t have a seller account?{" "}
+                        <Link
+                        to="/register"
+                        className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
+                            Sign up as seller
+                        </Link>
                     </p>
                 </div>
             </div>

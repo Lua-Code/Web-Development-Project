@@ -1,8 +1,9 @@
 import express from "express";
 const router = express.Router();
-const bcryptjs = require("bcryptjs");
-const User = require("../models/User");
+import bcryptjs from "bcryptjs";
+import User from "../models/User.js";
 //const {} = require("../controllers/userController");
+
 router.post("/register", async (req, res) => {
    console.log("REQ BODY =>", req.body);
   try {

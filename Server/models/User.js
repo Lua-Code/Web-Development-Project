@@ -14,7 +14,6 @@ const AddressSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
   name: { type: String, unique: true, required: true },
-  email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   roles: { type: [String], default: ["buyer"] }, // buyer, seller
   profile: {
@@ -27,7 +26,8 @@ const UserSchema = new mongoose.Schema({
   addresses: [AddressSchema],
   isActive: { type: Boolean, default: true },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
+  email: { type: String, unique: true, required: true }
 });
 
 export default mongoose.model("User", UserSchema);

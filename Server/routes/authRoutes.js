@@ -3,7 +3,8 @@ import * as authController from "../controllers/authController.js";
 
 const router = express.Router();
 
-router.post("/login", authController.login);
+router.post("/seller-login", authController.loginSeller);
+router.post("/buyer-login", authController.loginBuyer);
 router.post("/logout", authController.logout);
 router.get("/me", authController.getCurrentUser); //meow meow
 

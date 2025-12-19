@@ -1,18 +1,35 @@
- import User from "../models/User.js"; // your user model
+ import User from "../models/User.js";
+ import Seller from "../models/Seller.js"; 
 import bcrypt from "bcryptjs";
 
-export const login = async (req, res) => {
-  const { username, password } = req.body;
+export const loginBuyer = async (req, res) => {
+  const { email, password } = req.body;
 
-  const user = await User.findOne({ username });
-  if (!user) return res.status(400).json({ message: "User not found" });
+  const user = await User.findOne({ email });
+  if (!user) return res.status(400).json({ message: "Buyer Account Doesn't Exist, Please Register first." });
 
   const valid = await bcrypt.compare(password, user.password);
-  if (!valid) return res.status(400).json({ message: "Invalid password" });
+  if (!valid) return res.status(400).json({ message: "Invalid Email or Password" });
 
   req.session.userId = user._id;
 
-  res.json({ message: "Logged in", username: user.username });
+  res.json({ message: "Logged in", email: user.email });
+};
+
+export const loginSeller = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(400).json({ message: "Please create a buyer account first" });
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) return res.status(400).json({ message: "Invalid email or password" });
+
+  const sellerProfile = await Seller.findOne({ userId: user._id });
+  if (!sellerProfile) return res.status(403).json({ message: "Please register as a seller first" });
+
+  req.session.userId = user._id;
+  res.json({ message: "Logged in as seller", sellerProfile });
 };
 
 export const logout = (req, res) => {
