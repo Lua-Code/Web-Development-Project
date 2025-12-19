@@ -18,7 +18,7 @@ export default function Navbar() {
                 Browse
               </Link>
               <Link
-                to="/orders"
+                to="/my-orders"
                 className="text-[#1d3557] hover:text-[#457b9d] transition-colors"
               >
                 My Orders
@@ -41,12 +41,12 @@ export default function Navbar() {
               <User className="h-5 w-5" />
             </button>
 
-            <button className="text-[#1d3557] hover:text-[#457b9d] relative cursor-pointer">
+            <Link className="text-[#1d3557] hover:text-[#457b9d] relative cursor-pointer">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-3 -right-3 bg-[#e63946] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                 3
               </span>
-              </button>
+              </Link>
 
               <Link
                  to="/settings"
