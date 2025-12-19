@@ -1552,3 +1552,16 @@ node_modules/basic-auth/package.json
 node_modules/basic-auth/LICENSE
 node_modules/basic-auth/index.js
 node_modules/basic-auth/HISTORY.md
+node_modules/.bin/bcrypt.ps1
+node_modules/bcryptjs/bin/bcrypt
+node_modules/bcryptjs/index.d.ts
+node_modules/bcryptjs/index.js
+node_modules/bcryptjs/package.json
+node_modules/bcryptjs/LICENSE
+node_modules/bcryptjs/types.d.ts
+node_modules/bcryptjs/umd/index.js
+node_modules/bcryptjs/umd/index.d.ts
+node_modules/bcryptjs/umd/package.json
+node_modules/bcryptjs/umd/types.d.ts
+node_modules/bcryptjs/README.md
+package-lock.json
