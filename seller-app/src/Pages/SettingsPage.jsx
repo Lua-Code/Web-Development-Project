@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
-
+import { useState } from "react";
+import FieldArea from "../Components/Settings/FieldArea"
+import TextArea from "../Components/Settings/TextArea"
 export default function Settings() {
   const [user, setUser] = useState(null);
   const [seller, setSeller] = useState(null);
@@ -133,6 +134,8 @@ export default function Settings() {
             <p>{user.profile?.phone || "-"}</p>
           )}
         </div>
+    );
+}
 
         <div>
           <label>Location</label>
