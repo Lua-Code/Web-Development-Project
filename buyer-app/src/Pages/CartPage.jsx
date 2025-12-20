@@ -8,12 +8,7 @@ function CartPage() {
   const [error, setError] = useState(null);
 
   const [showPayment, setShowPayment] = useState(false);
-
-  const [address, setAddress] = useState("");
-  const [cardHolderName, setCardHolderName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiry, setExpiry] = useState("");
-  const [cvv, setCvv] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
 
   const fetchCart = async () => {
     try {
@@ -61,23 +56,12 @@ function CartPage() {
 
   const handleCheckout = async () => {
     try {
-      if (!address.trim()) return alert("Please enter your address.");
-      if (!cardHolderName.trim()) return alert("Please enter card holder name.");
-      if (cardNumber.trim().length < 12) return alert("Please enter a valid card number.");
-      if (!expiry.trim()) return alert("Please enter expiry date.");
-      if (cvv.trim().length < 3) return alert("Please enter a valid CVV.");
-
       const res = await fetch(`${API_URL}/api/transactions/checkout`, {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          address,
-          paymentMethod: "card",
-          cardHolderName,
-          cardNumber,
-          expiry,
-          cvv
+          method: paymentMethod, // "cash" or "credit-card"
         }),
       });
 
@@ -86,10 +70,8 @@ function CartPage() {
         throw new Error(errData.message || "Checkout failed");
       }
 
-      alert("Payment successful! Order created.");
+      alert("Payment successful! Order placed.");
       setShowPayment(false);
-
-      // backend clears cart
       setCartItems([]);
     } catch (err) {
       alert(err.message);
@@ -180,9 +162,7 @@ function CartPage() {
                 alignItems: "center",
               }}
             >
-              <p style={{ fontSize: "22px", fontWeight: "700", color: "#1D3557" }}>
-                Total: ${total}
-              </p>
+              <p style={{ fontSize: "22px", fontWeight: "700", color: "#1D3557" }}>Total: ${total}</p>
 
               <button
                 onClick={() => setShowPayment(true)}
@@ -232,51 +212,20 @@ function CartPage() {
             <h2 style={{ margin: 0, color: "#1D3557" }}>Payment</h2>
             <p style={{ color: "#457B9D", marginTop: "6px" }}>Total: ${total}</p>
 
-            <p style={{ marginTop: "12px", fontWeight: "600" }}>Address</p>
-            <input
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              placeholder="Enter your address"
-              style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}
-            />
-
-            <p style={{ marginTop: "12px", fontWeight: "600" }}>Card Holder Name</p>
-            <input
-              value={cardHolderName}
-              onChange={(e) => setCardHolderName(e.target.value)}
-              placeholder="Name on card"
-              style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}
-            />
-
-            <p style={{ marginTop: "12px", fontWeight: "600" }}>Card Number</p>
-            <input
-              value={cardNumber}
-              onChange={(e) => setCardNumber(e.target.value)}
-              placeholder="1234 5678 9012 3456"
-              style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}
-            />
-
-            <div style={{ display: "flex", gap: "10px", marginTop: "12px" }}>
-              <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontWeight: "600" }}>Expiry</p>
-                <input
-                  value={expiry}
-                  onChange={(e) => setExpiry(e.target.value)}
-                  placeholder="MM/YY"
-                  style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}
-                />
-              </div>
-
-              <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontWeight: "600" }}>CVV</p>
-                <input
-                  value={cvv}
-                  onChange={(e) => setCvv(e.target.value)}
-                  placeholder="123"
-                  style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid #ccc" }}
-                />
-              </div>
-            </div>
+            <p style={{ marginTop: "12px", fontWeight: "600" }}>Payment Method</p>
+            <select
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+              }}
+            >
+              <option value="cash">Cash</option>
+              <option value="credit-card">Credit Card</option>
+            </select>
 
             <div style={{ display: "flex", gap: "10px", marginTop: "18px" }}>
               <button

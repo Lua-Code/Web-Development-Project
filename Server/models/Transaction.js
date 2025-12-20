@@ -1,21 +1,24 @@
 import mongoose from "mongoose";
 
 const TransactionSchema = new mongoose.Schema({
-  orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
-  buyerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "Seller" },
+  orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order", required: true },
+  buyerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "Seller", required: true },
 
-  type: { type: String, default: "payment" }, // payment, refund
-  status: { type: String, default: "completed" }, // completed, failed
   amount: { type: Number, required: true },
 
-  // payment details (simple for college project)
-  paymentMethod: { type: String, default: "card" },
-  cardHolderName: { type: String, default: "" },
-  cardLast4: { type: String, default: "" },
-  address: { type: String, default: "" },
+  currency: { type: String, default: "USD" },
 
-  createdAt: { type: Date, default: Date.now }
+  // only cash or credit-card
+  method: {
+    type: String,
+    enum: ["cash", "credit-card"],
+    required: true,
+  },
+
+  status: { type: String, default: "completed" },
+
+  createdAt: { type: Date, default: Date.now },
 });
 
 export default mongoose.model("Transaction", TransactionSchema);

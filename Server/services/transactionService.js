@@ -55,12 +55,8 @@ const getRevenueByCategoryForSeller = async (sellerId) => {
 const checkoutFromCart = async (buyerId, paymentData = {}) => {
   if (!buyerId) throw new Error("buyerId is required");
 
-  const {
-    address = "",
-    paymentMethod = "card",
-    cardHolderName = "",
-    cardNumber = ""
-  } = paymentData;
+  const { method = "cash" } = paymentData;
+
 
   const cart = await Cart.findOne({ userId: buyerId }).populate({
     path: "items.listingId",
@@ -139,14 +135,12 @@ const checkoutFromCart = async (buyerId, paymentData = {}) => {
       orderId: order._id,
       buyerId,
       sellerId,
-      type: "payment",
-      status: "completed",
       amount: order.total,
-      paymentMethod,
-      cardHolderName,
-      cardLast4: String(cardNumber).slice(-4),
-      address
+      currency: "USD",
+      method, // "cash" or "credit-card"
+      status: "completed"
     });
+
 
     createdOrders.push(order);
     createdTransactions.push(tx);
