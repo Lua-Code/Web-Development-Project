@@ -6,24 +6,11 @@ import { ChartColumn, Package, ShoppingBag, TrendingUp, Settings } from "lucide-
 const MainLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    
-    const handleLogout = async () => {
-    try {
-        const res = await fetch("http://localhost:5000/api/auth/logout", {
-        method: "POST",           // or GET if your backend uses GET
-        credentials: "include"    // important: sends the session cookie
-        });
 
-        const data = await res.json();
-        console.log(data.message);  // "Logged out"
-
-        // Redirect to login page
-        navigate("/login");
-    } catch (err) {
-        console.error("Logout failed:", err);
-    }
+    const handleLogout = () => {
+        /* authentication logic later */
+        window.location.href = "http://localhost:5173/"; // replace with buyer URL
     };
-
 
     const tabClass = (path) =>
         `flex items-center gap-2 px-4 py-2 rounded-xl cursor-pointer text-sm transition ${

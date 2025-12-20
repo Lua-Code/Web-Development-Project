@@ -1,0 +1,119 @@
+@reference "tailwindcss";
+
+@layer components {
+  .orders-page {
+    @apply mx-auto w-full max-w-6xl px-6 py-6;
+  }
+
+  .orders-list {
+    @apply space-y-5;
+  }
+
+  .order-card {
+    @apply w-full rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5;
+  }
+
+  .order-card-inner {
+    @apply flex items-start gap-4;
+  }
+
+  .order-thumb {
+    @apply h-16 w-16 shrink-0 overflow-hidden rounded-xl bg-slate-200 ring-1 ring-black/5;
+  }
+
+  .order-thumb img {
+    @apply h-full w-full object-cover;
+  }
+
+  .order-main {
+    @apply flex-1;
+  }
+
+  .order-top {
+    @apply flex items-start justify-between gap-4;
+  }
+
+  .order-title {
+    @apply text-base font-semibold text-slate-900;
+  }
+
+  .order-subtitle {
+    @apply mt-0.5 text-sm text-slate-500;
+  }
+
+  .order-right {
+    @apply flex items-center gap-3;
+  }
+
+  .order-price {
+    @apply text-sm font-semibold text-rose-500;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset;
+  }
+
+  .badge-urgent {
+    @apply bg-rose-50 text-rose-600 ring-rose-200;
+  }
+
+  .badge-pending {
+    @apply bg-rose-50 text-rose-600 ring-rose-200;
+  }
+
+  .badge-shipped {
+    @apply bg-sky-50 text-sky-700 ring-sky-200;
+  }
+
+  .badge-delivered {
+    @apply bg-emerald-50 text-emerald-700 ring-emerald-200;
+  }
+
+  .buyer-row {
+    @apply mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-600;
+  }
+
+  .buyer-chip {
+    @apply inline-flex items-center gap-2;
+  }
+
+  .buyer-avatar {
+    @apply grid h-7 w-7 place-items-center rounded-full bg-emerald-100 text-xs font-semibold text-emerald-700;
+  }
+
+  .buyer-email {
+    @apply text-slate-500;
+  }
+
+  .address-row {
+    @apply mt-1 flex items-center gap-2 text-sm text-slate-500;
+  }
+
+  .order-bottom {
+    @apply mt-3 flex flex-wrap items-center justify-between gap-3;
+  }
+
+  .status-wrap {
+    @apply flex items-center gap-2;
+  }
+
+  .actions-wrap {
+    @apply flex items-center gap-3;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold ring-1 ring-inset transition;
+  }
+
+  .btn-contact {
+    @apply bg-white text-slate-700 ring-slate-200 hover:bg-slate-50;
+  }
+
+  .btn-danger {
+    @apply bg-rose-500 text-white ring-rose-500 hover:bg-rose-600;
+  }
+
+  .btn-primary {
+    @apply bg-slate-700 text-white ring-slate-700 hover:bg-slate-800;
+  }
+}
