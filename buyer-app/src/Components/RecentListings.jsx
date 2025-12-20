@@ -56,9 +56,9 @@ export default function RecentListings() {
                 </p>
                 <button
                   onClick={() => console.log("Order placed for:", product.name)}
-                  className="mt-4 w-full bg-[#457b9d] text-white py-2 rounded hover:bg-[#1d3557]"
+                  className="mt-4 w-full bg-[#457b9d] text-white py-2 rounded hover:bg-[#1d3557] cursor-pointer transition"
                 >
-                  Order
+                  Add to Cart
                 </button>
               </div>
             </div>

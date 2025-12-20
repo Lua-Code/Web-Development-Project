@@ -5,10 +5,10 @@ const getCategoryById = async (categoryId) => {
     return category;
 }   
 
-const getAllCategories = async () => {
+const fetchAllCategories = async () => {
     const categories = await Category.find();
     return categories;
 }
 
 
-export default { getCategoryById, getAllCategories };
+export default { getCategoryById, fetchAllCategories };

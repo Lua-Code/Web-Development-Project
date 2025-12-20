@@ -26,7 +26,7 @@ const getBrowseListings = async () => {
   })
     .sort({ createdAt: -1 })
     .populate("sellerId", "storeName ratings")
-    .populate("categoryId", "name"); // <-- populate category name
+    .populate("categoryId", "name"); 
 
   return listings.map((l) => ({
     _id: l._id,
@@ -35,7 +35,8 @@ const getBrowseListings = async () => {
     price: l.price,
     seller: l.sellerId?.storeName || "Unknown",
     rating: l.sellerId?.ratings?.average ?? 0,
-    category: l.categoryId?.name || "Uncategorized", // <-- now frontend can use this
+    condition: l.condition || "N/A",
+    category: l.categoryId?.name || "Uncategorized", 
   }));
 };
 
