@@ -1,114 +1,75 @@
-import User from "../models/User.js";
+import userService from "../services/userService.js";
 
-const getUserProfile = async(userId) => {
-    const user = await User.findById(userId);
-    return user;
+// Get current logged-in user
+const getCurrentUser = async (req, res) => {
+  try {
+    const user = await userService.getCurrentUser(req.session.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
 };
 
-
-const updateUserProfile = async(userId, data) => {
-    const updatedUser = await User.findByIdAndUpdate(userId, data, {new: true});
-    return updatedUser;
-};
-
+// Get all users
 const getUsers = async (req, res) => {
   try {
-    const users = await User.find().select("-password");
+    const users = await userService.getUsers();
     res.json(users);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
 
+// Get user by ID
 const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    const user = await userService.getUserById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (err) {
     res.status(400).json({ message: "Invalid user ID" });
   }
 };
 
+// Create user
 const createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
-
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(409).json({ message: "Email already exists" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = await User.create({
-      username,
-      email,
-      password: hashedPassword
-    });
-
-    res.status(201).json({
-      id: user._id,
-      username: user.username,
-      email: user.email
-    });
+    const user = await userService.createUser(req.body);
+    res.status(201).json(user);
   } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    res.status(400).json({ message: err.message });
   }
 };
 
+// Update user
 const updateUser = async (req, res) => {
   try {
-    const updates = { ...req.body };
-
-
-    delete updates.password;
-
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      updates,
-      { new: true }
-    ).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json(user);
+    const updatedUser = await userService.updateUser(req.session.userId, req.body);
+    res.json(updatedUser);
   } catch (err) {
-    res.status(400).json({ message: "Invalid update" });
+    console.error(err);
+    res.status(400).json({ message: err.message });
   }
 };
 
+// Delete user
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
+    await userService.deleteUser(req.params.id);
     res.json({ message: "User deleted successfully" });
   } catch (err) {
-    res.status(400).json({ message: "Invalid user ID" });
+    res.status(400).json({ message: err.message });
   }
 };
 
-export default {
-    getUserProfile,
-    updateUserProfile,
-    getUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser
+export {
+  getCurrentUser,
+  getUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser
 };

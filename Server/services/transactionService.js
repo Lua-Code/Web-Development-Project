@@ -1,4 +1,5 @@
 import Transaction from "../models/Transaction.js";
+import categoryService from "./categoryService.js";
 
 const getTotalRevenueBySeller = async (sellerId) => {
   const result = await Transaction.aggregate([
@@ -14,7 +15,6 @@ const getRevenueByCategoryForSeller = async (sellerId) => {
     path: "orderId",
     populate: { path: "items.listingId", select: "categoryId" },
   });
-  console.log("Transactions:", JSON.stringify(transactions, null, 2));
 
   const revenueMap = {};
 
@@ -26,12 +26,18 @@ const getRevenueByCategoryForSeller = async (sellerId) => {
     });
   });
 
-  const revenueByCategory = Object.keys(revenueMap).map((catId) => ({
-    category: catId, 
-    revenue: revenueMap[catId],
-  }));
+  const revenueByCategory = await Promise.all(
+    Object.keys(revenueMap).map(async (catId) => {
+      const cat = await categoryService.getCategoryById(catId);
+      return {
+        category: cat.name,
+        revenue: revenueMap[catId],
+      };
+    })
+  );
 
   return revenueByCategory;
 };
+
 
 export default { getTotalRevenueBySeller, getRevenueByCategoryForSeller };

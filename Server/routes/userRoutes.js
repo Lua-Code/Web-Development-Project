@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import User from "../models/User.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
-// import { getProfile, updateProfile } from "../controllers/userController.js";
+import * as userController from "../controllers/userController.js";
 //const {} = require("../controllers/userController");
 
 router.post("/register", async (req, res) => {
@@ -39,9 +39,8 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// router.get("/profile", authMiddleware, getProfile);
-// router.put("/profile", authMiddleware, updateProfile);
-// router.get("/me", authMiddleware, getProfile);
+router.get("/me", authMiddleware, userController.getCurrentUser);
+router.put("/update", authMiddleware, userController.updateUser);
 
 
 // Export router

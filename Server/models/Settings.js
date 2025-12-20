@@ -1,5 +1,5 @@
 // models/Settings.js
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const SettingsSchema = new mongoose.Schema({
   userId: {
@@ -32,4 +32,4 @@ const SettingsSchema = new mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model("Settings", SettingsSchema);
+export default mongoose.model("Settings", SettingsSchema);

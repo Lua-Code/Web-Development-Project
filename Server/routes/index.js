@@ -10,6 +10,7 @@ import conversationRoutes from "./conversationRoutes.js";
 import messageRoutes from "./messageRoutes.js";
 import transactionRoutes from "./transactionRoutes.js";
 import authRoutes from "./authRoutes.js";
+import settingsRoutes from "./settingsRoutes.js";
 
 // Mount routers
 router.use("/users", userRoutes);
@@ -21,5 +22,6 @@ router.use("/conversations", conversationRoutes);
 router.use("/messages", messageRoutes);
 router.use("/transactions", transactionRoutes);
 router.use("/auth", authRoutes);
+router.use("/settings", settingsRoutes);
 
 export default router;

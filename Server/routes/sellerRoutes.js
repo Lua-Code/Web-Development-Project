@@ -10,6 +10,7 @@ import * as sellerController from "../controllers/sellerController.js";
 router.get("/analytics", authMiddleware, sellerController.getSellerAnalytics); 
 router.get("/dashboard", authMiddleware, sellerController.getSellerDashboard);
 router.get("/me", authMiddleware, sellerController.getCurrentSellerProfile);
+router.put("/update", authMiddleware, sellerController.updateSellerProfile);
 
 
 // Export router

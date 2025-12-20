@@ -1,114 +1,83 @@
 import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
-const getUserProfile = async(userId) => {
-    const user = await User.findById(userId);
-    return user;
+// Get user by ID
+const getUserById = async (userId) => {
+  return await User.findById(userId).select("-password");
 };
 
-
-const updateUserProfile = async(userId, data) => {
-    const updatedUser = await User.findByIdAndUpdate(userId, data, {new: true});
-    return updatedUser;
+// Get current logged-in user by session/userId
+const getCurrentUser = async (userId) => {
+  return await User.findById(userId).select("-password");
 };
 
-const getUsers = async (req, res) => {
-  try {
-    const users = await User.find().select("-password");
-    res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
+// Get all users
+const getUsers = async () => {
+  return await User.find().select("-password");
 };
 
-const getUserById = async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id).select("-password");
+// Create a new user
+const createUser = async ({ username, email, password }) => {
+  const existing = await User.findOne({ email });
+  if (existing) throw new Error("Email already exists");
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(password, salt);
 
-    res.json(user);
-  } catch (err) {
-    res.status(400).json({ message: "Invalid user ID" });
-  }
+  const user = await User.create({ username, email, password: hashedPassword });
+  const u = user.toObject();
+  delete u.password;
+  return u;
 };
 
-const createUser = async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
+// Update user safely (handles nested profile)
+const updateUser = async (userId, updates) => {
+  console.log("updates are:", updates);
+  const user = await User.findById(userId);
+  if (!user) throw new Error("User not found");
 
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
-    }
+  delete updates.password;
 
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(409).json({ message: "Email already exists" });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = await User.create({
-      username,
-      email,
-      password: hashedPassword
+  // handle nested profile
+  if (updates.profile && typeof updates.profile === "object") {
+    Object.keys(updates.profile).forEach((key) => {
+      user.profile[key] = updates.profile[key];
     });
-
-    res.status(201).json({
-      id: user._id,
-      username: user.username,
-      email: user.email
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+    user.markModified("profile"); // ensure Mongoose tracks changes
   }
+
+  // handle top-level updates
+  Object.keys(updates).forEach((key) => {
+    if (key !== "profile") {
+      user[key] = updates[key];
+      if (Array.isArray(user[key])) user.markModified(key); // for arrays
+    }
+  });
+
+  await user.save();
+  console.log("Saved user:", await User.findById(userId));
+
+
+
+  const u = user.toObject();
+  delete u.password;
+  return u;
 };
 
-const updateUser = async (req, res) => {
-  try {
-    const updates = { ...req.body };
 
 
-    delete updates.password;
-
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      updates,
-      { new: true }
-    ).select("-password");
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json(user);
-  } catch (err) {
-    res.status(400).json({ message: "Invalid update" });
-  }
-};
-
-const deleteUser = async (req, res) => {
-  try {
-    const user = await User.findByIdAndDelete(req.params.id);
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.json({ message: "User deleted successfully" });
-  } catch (err) {
-    res.status(400).json({ message: "Invalid user ID" });
-  }
+// Delete a user
+const deleteUser = async (userId) => {
+  const user = await User.findByIdAndDelete(userId);
+  if (!user) throw new Error("User not found");
+  return true;
 };
 
 export default {
-    getUserProfile,
-    updateUserProfile,
-    getUsers,
-    getUserById,
-    createUser,
-    updateUser,
-    deleteUser
+  getUserById,
+  getCurrentUser,
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser
 };
