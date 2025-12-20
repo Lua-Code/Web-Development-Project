@@ -32,7 +32,6 @@ const createUser = async ({ username, email, password }) => {
 
 // Update user safely (handles nested profile)
 const updateUser = async (userId, updates) => {
-  console.log("updates are:", updates);
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
 
@@ -43,19 +42,18 @@ const updateUser = async (userId, updates) => {
     Object.keys(updates.profile).forEach((key) => {
       user.profile[key] = updates.profile[key];
     });
-    user.markModified("profile"); // ensure Mongoose tracks changes
+    user.markModified("profile"); 
   }
 
   // handle top-level updates
   Object.keys(updates).forEach((key) => {
     if (key !== "profile") {
       user[key] = updates[key];
-      if (Array.isArray(user[key])) user.markModified(key); // for arrays
+      if (Array.isArray(user[key])) user.markModified(key); 
     }
   });
 
   await user.save();
-  console.log("Saved user:", await User.findById(userId));
 
 
 
