@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const CategorySchema = new mongoose.Schema({
   name: { type: String, required: true },
-  description: String,
+  slug: String,
   parentId: { type: mongoose.Schema.Types.ObjectId, ref: "Category", default: null },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }

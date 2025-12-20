@@ -7,8 +7,6 @@ import mongoose from "mongoose";
 // Buyer Browse: GET all active listings for browse page
 export const getBrowseListings = async (req, res) => {
   try {
-    // import service (ESM default export)
-    const listingService = (await import("../services/listingService.js")).default;
 
     const products = await listingService.getBrowseListings();
     return res.json(products);

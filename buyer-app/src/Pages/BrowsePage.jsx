@@ -1,155 +1,135 @@
-import React, { useState, useEffect } from 'react';
-import MainLayout from '../Layouts/MainLayout';
+import React, { useState, useEffect } from "react";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function BrowsePage() {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-    const [products, setProducts] = useState([]);
-    const [search, setSearch] = useState("");
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchProductsAndCategories = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-    useEffect(() => {
-        fetch("http://localhost:5000/products")   
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Failed to fetch products");
-                }
-                return res.json();
-            })
-            .then(data => {
-                setProducts(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
+        // Fetch products
+        const resProducts = await fetch(`http://localhost:5000/api/listings/browse`, { credentials: "include" });
+        if (!resProducts.ok) throw new Error(`Failed to fetch products: ${resProducts.status}`);
+        const dataProducts = await resProducts.json();
 
-    return (
-      
-            <div style={{ background: "#F1FAEE", padding: "30px", minHeight: "100vh", fontFamily: "sans-serif" }}>
+        // Fetch categories
+        const resCategories = await fetch(`http://localhost:5000/api/categories`, { credentials: "include" });
+        if (!resCategories.ok) throw new Error(`Failed to fetch categories: ${resCategories.status}`);
+        const dataCategories = await resCategories.json();
 
-                <h1 style={{ color: "#1D3557", fontSize: "26px", fontWeight: "bold" }}>
-                    Browse Marketplace
-                </h1>
-                <p style={{ color: "#457B9D" }}>
-                    Discover unique items from trusted sellers
-                </p>
+        setProducts(dataProducts);
+        setCategories([{ _id: "all", name: "All Categories" }, ...dataCategories]);
+      } catch (err) {
+        setError(err.message || "Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                {/* Search */}
-                <input
-                    type="text"
-                    placeholder="Search for items..."
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                    style={{
-                        width: "100%",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        border: "1px solid #ccc",
-                        margin: "20px 0",
-                        background: "#FFFFFF"
-                    }}
-                />
+    fetchProductsAndCategories();
+  }, []);
 
-                {/* Status */}
-                {loading && <p>Loading products...</p>}
-                {error && <p style={{ color: "red" }}>{error}</p>}
+  const filteredProducts = products.filter((p) => {
+    const matchesSearch = p.name?.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory =
+      selectedCategory === "All Categories" || p.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
-                {!loading && !error && (
-                    <div style={{ display: "flex", gap: "20px" }}>
+  return (
+    <div style={{ background: "#F1FAEE", minHeight: "100vh", padding: "30px", fontFamily: "system-ui, sans-serif" }}>
+      {/* Header */}
+      <div style={{ marginBottom: "25px" }}>
+        <h1 style={{ color: "#1D3557", fontSize: "28px", fontWeight: "800" }}>Browse Marketplace</h1>
+        <p style={{ color: "#457B9D", marginTop: "6px" }}>Discover unique items from trusted sellers</p>
+      </div>
 
-                        {/* Filters (UI only) */}
-                        <div style={{
-                            width: "250px",
-                            background: "#FFFFFF",
-                            padding: "20px",
-                            borderRadius: "10px"
-                        }}>
-                            <h3 style={{ color: "#1D3557" }}>Filters</h3>
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search for items..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        style={{ width: "100%", padding: "12px 14px", borderRadius: "12px", border: "1px solid #ddd", marginBottom: "30px", fontSize: "15px" }}
+      />
 
-                            <p style={{ marginTop: "15px", fontWeight: "600" }}>Categories</p>
-                            <ul style={{ listStyle: "none", padding: 0 }}>
-                                <li>All Categories</li>
-                                <li>Electronics</li>
-                                <li>Fashion</li>
-                                <li>Home & Garden</li>
-                                <li>Sports & Outdoors</li>
-                                <li>Books & Media</li>
-                            </ul>
+      {loading && <p>Loading products…</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-                            <p style={{ marginTop: "15px", fontWeight: "600" }}>Condition</p>
-                            <label><input type="checkbox" /> New</label><br />
-                            <label><input type="checkbox" /> Like New</label><br />
-                            <label><input type="checkbox" /> Good</label><br />
-                            <label><input type="checkbox" /> Fair</label>
-                        </div>
+      {!loading && !error && (
+        <div style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
+          {/* Filters */}
+          <aside style={{ width: "260px", background: "#FFFFFF", padding: "20px", borderRadius: "16px", boxShadow: "0 12px 30px rgba(0,0,0,0.06)", position: "sticky", top: "20px" }}>
+            <h3 style={{ color: "#1D3557", fontSize: "18px", fontWeight: "700", marginBottom: "18px" }}>Filters</h3>
 
-                        {/* Products */}
-                        <div style={{ flex: 1 }}>
-                            <p style={{ marginBottom: "10px", color: "#457B9D" }}>
-                                {products.length} products found
-                            </p>
-
-                            <div style={{
-                                display: "grid",
-                                gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                                gap: "20px"
-                            }}>
-                                {products
-                                    .filter(p =>
-                                        p.name?.toLowerCase().includes(search.toLowerCase())
-                                    )
-                                    .map(product => (
-                                        <div key={product.id} style={{
-                                            background: "#FFFFFF",
-                                            borderRadius: "10px",
-                                            overflow: "hidden"
-                                        }}>
-                                            <img
-                                                src={product.image}
-                                                alt={product.name}
-                                                style={{
-                                                    width: "100%",
-                                                    height: "180px",
-                                                    objectFit: "cover"
-                                                }}
-                                            />
-
-                                            <div style={{ padding: "15px" }}>
-                                                <h4 style={{ color: "#1D3557" }}>{product.name}</h4>
-                                                <p style={{ color: "#E63946", fontWeight: "bold" }}>
-                                                    ${product.price}
-                                                </p>
-                                                <p style={{ fontSize: "12px", color: "#457B9D" }}>
-                                                    {product.seller} • ⭐ {product.rating}
-                                                </p>
-
-                                                <button style={{
-                                                    marginTop: "10px",
-                                                    width: "100%",
-                                                    padding: "10px",
-                                                    background: "#457B9D",
-                                                    color: "#F1FAEE",
-                                                    border: "none",
-                                                    borderRadius: "6px",
-                                                    cursor: "pointer",
-                                                    fontWeight: "600"
-                                                }}>
-                                                    Add To Cart
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-
-                    </div>
-                )}
+            {/* Categories */}
+            <div style={{ marginBottom: "24px" }}>
+              <p style={{ fontWeight: "600", marginBottom: "10px", color: "#1D3557" }}>Categories</p>
+              {categories.map((cat) => (
+                <div
+                  key={cat._id}
+                  onClick={() => setSelectedCategory(cat.name)}
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: "10px",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                    marginBottom: "6px",
+                    background: selectedCategory === cat.name ? "#457B9D" : "transparent",
+                    color: selectedCategory === cat.name ? "#F1FAEE" : "#457B9D",
+                    transition: "all 0.2s",
+                  }}
+                >
+                  {cat.name}
+                </div>
+              ))}
             </div>
-     
-    );
+
+            {/* Condition (UI only) */}
+            <div>
+              <p style={{ fontWeight: "600", marginBottom: "10px", color: "#1D3557" }}>Condition</p>
+              {["New", "Like New", "Good", "Fair"].map((c) => (
+                <label key={c} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "14px", color: "#457B9D", marginBottom: "8px", cursor: "pointer" }}>
+                  <input type="checkbox" />
+                  {c}
+                </label>
+              ))}
+            </div>
+          </aside>
+
+          {/* Products */}
+          <main style={{ flex: 1 }}>
+            <p style={{ marginBottom: "14px", color: "#457B9D", fontSize: "14px" }}>{filteredProducts.length} products found</p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "20px" }}>
+              {filteredProducts.map((product) => (
+                <div key={product._id} style={{ background: "#FFFFFF", borderRadius: "16px", overflow: "hidden", boxShadow: "0 10px 25px rgba(0,0,0,0.06)", transition: "transform 0.2s" }}
+                     onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-4px)")}
+                     onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}>
+                  <img src={product.image || "https://via.placeholder.com/300"} alt={product.name} style={{ width: "100%", height: "180px", objectFit: "cover" }} />
+                  <div style={{ padding: "14px" }}>
+                    <h4 style={{ color: "#1D3557", fontSize: "16px", fontWeight: "700", marginBottom: "6px" }}>{product.name}</h4>
+                    <p style={{ color: "#E63946", fontWeight: "800", marginBottom: "6px" }}>${product.price}</p>
+                    <p style={{ fontSize: "12px", color: "#457B9D", marginBottom: "10px" }}>{product.seller} • ⭐ {product.rating}</p>
+                    <button style={{ width: "100%", padding: "10px", background: "#457B9D", color: "#F1FAEE", border: "none", borderRadius: "10px", fontWeight: "600", cursor: "pointer" }}>Add To Cart</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </main>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default BrowsePage;
