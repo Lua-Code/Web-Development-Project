@@ -13,17 +13,8 @@ import AnalyticsPage from "./Pages/AnalyticsPage";
 import SettingsPage from "./Pages/SettingsPage";
 import EditProduct from "./Components/My Products/EditProduct";
 import AddProductButton from "./Components/My Products/AddProductButton.jsx";
-
-
-
-import LoginPage from './Pages/LoginPage'
-import RegisterPage from './Pages/RegisterPage'
-import DashboardPage from './Pages/DashboardPage'
-import MyProductsPage from './Pages/MyProductsPage'
-import OrdersPage from './Pages/OrdersPage'
-import AnalyticsPage from './Pages/AnalyticsPage'
-import SettingsPage from './Pages/SettingsPage'
 import CreateShopPage from './Pages/CreateShopPage';
+
 
 
 
