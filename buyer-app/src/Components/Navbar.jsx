@@ -99,13 +99,6 @@ export default function Navbar() {
               </span>
             </Link>
 
-            <Link
-              to="/settings"
-              className="text-[#1d3557] hover:text-[#457b9d] cursor-pointer"
-            >
-              <Settings className="h-5 w-5" />
-            </Link>
-
 
             {currentUser ? (
               <button

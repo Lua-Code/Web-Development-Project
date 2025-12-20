@@ -8,7 +8,6 @@ function Profile() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch user profile on mount
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -44,7 +43,7 @@ function Profile() {
       if (!res.ok) throw new Error(data.message || "Failed to save profile");
       setEdit(false);
       setBackup(null);
-      setUser(data); // update with latest from server
+      setUser(data); 
     } catch (err) {
       console.error(err);
       alert(err.message);

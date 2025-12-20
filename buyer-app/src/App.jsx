@@ -10,7 +10,6 @@ import HomePage from "./Pages/HomePage";
 import BrowsePage from "./Pages/BrowsePage";
 import OrderManagement from "./Pages/MyOrdersPage";
 import LoginPage from "./Pages/LoginPage";
-import SettingsPage from "./Pages/SettingsPage";
 import RegisterPage from "./Pages/RegisterPage";
 import ProductPage from "./Pages/ProductPage";
 import CartPage from "./Pages/CartPage";
@@ -28,7 +27,6 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/marketplace" element={<BrowsePage />} />
           <Route path="/orders" element={<OrderManagement />} />
-          <Route path="/settings" element={<SettingsPage />} />
           <Route path="/product/:id" element={<ProductPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />

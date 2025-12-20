@@ -39,16 +39,12 @@ function App() {
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
 
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/edit-product/:id" element={<EditProduct />} />
-          <Route path="/add-listing" element={<AddProductButton />} />
-
         <Route element = {<AuthLayout/>}>
           <Route path="/login" element = {<LoginPage/>}/>
           <Route path="/register" element = {<RegisterPage/>}/>
           <Route path="/create-shop" element = {<CreateShopPage/>}/>
+          <Route path="/edit-product/:id" element={<EditProduct />} />
+          <Route path="/add-listing" element={<AddProductButton />} />
         </Route>
       </Routes>
     </Router>
