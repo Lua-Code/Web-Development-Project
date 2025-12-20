@@ -1,19 +1,19 @@
-const Settings = require("../models/Settings");
-const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+import Settings from "../models/Settings.js";
+import User from "../models/User.js";
+import bcrypt from "bcryptjs";
 
 // GET settings
-exports.getSettings = async (req, res) => {
-  const settings = await Settings.findOne({ userId: req.user.id });
+export const getSettings = async (req, res) => {
+  const settings = await Settings.findOne({ userId: req.userId });
   res.json(settings);
 };
 
 // UPDATE privacy
-exports.updatePrivacy = async (req, res) => {
+export const updatePrivacy = async (req, res) => {
   const { profileVisibility } = req.body;
 
   const updated = await Settings.findOneAndUpdate(
-    { userId: req.user.id },
+    { userId: req.userId },
     { "privacy.profileVisibility": profileVisibility },
     { new: true, upsert: true }
   );
@@ -22,11 +22,11 @@ exports.updatePrivacy = async (req, res) => {
 };
 
 // UPDATE notifications
-exports.updateNotifications = async (req, res) => {
+export const updateNotifications = async (req, res) => {
   const { emailAlerts, payments } = req.body;
 
   const updated = await Settings.findOneAndUpdate(
-    { userId: req.user.id },
+    { userId: req.userId },
     {
       "notifications.emailAlerts": emailAlerts,
       "notifications.payments": payments
@@ -38,10 +38,10 @@ exports.updateNotifications = async (req, res) => {
 };
 
 // CHANGE PASSWORD
-exports.changePassword = async (req, res) => {
+export const changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
 
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.userId);
   const isMatch = await bcrypt.compare(currentPassword, user.password);
 
   if (!isMatch) {
