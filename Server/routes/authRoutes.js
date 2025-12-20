@@ -7,5 +7,7 @@ router.post("/seller-login", authController.loginSeller);
 router.post("/buyer-login", authController.loginBuyer);
 router.post("/logout", authController.logout);
 router.get("/me", authController.getCurrentUser); //meow meow
+router.post("/register", authController.registerUser);
+
 
 export default router;

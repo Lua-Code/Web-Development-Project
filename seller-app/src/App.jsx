@@ -12,6 +12,7 @@ import MyProductsPage from './Pages/MyProductsPage'
 import OrdersPage from './Pages/OrdersPage'
 import AnalyticsPage from './Pages/AnalyticsPage'
 import SettingsPage from './Pages/SettingsPage'
+import CreateShopPage from './Pages/CreateShopPage';
 
 
 function App() {
@@ -28,7 +29,8 @@ function App() {
         </Route>
         <Route element = {<AuthLayout/>}>
           <Route path="/login" element = {<LoginPage/>}/>
-          <Route path="/register" elemenet = {<RegisterPage/>}/>
+          <Route path="/register" element = {<RegisterPage/>}/>
+          <Route path="/create-shop" element = {<CreateShopPage/>}/>
         </Route>
       </Routes>
     </Router>

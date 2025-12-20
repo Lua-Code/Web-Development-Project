@@ -40,7 +40,7 @@ function BrowsePage() {
                 {/* Search */}
                 <input
                     type="text"
-                    placeholder="Search for items or sellers..."
+                    placeholder="Search for items..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     style={{
@@ -48,7 +48,8 @@ function BrowsePage() {
                         padding: "10px",
                         borderRadius: "8px",
                         border: "1px solid #ccc",
-                        margin: "20px 0"
+                        margin: "20px 0",
+                        background: "#FFFFFF"
                     }}
                 />
 

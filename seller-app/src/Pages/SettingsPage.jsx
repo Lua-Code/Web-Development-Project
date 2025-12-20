@@ -9,7 +9,6 @@ export default function Settings() {
   const [backupUser, setBackupUser] = useState(null);
   const [backupSeller, setBackupSeller] = useState(null);
 
-  // Fetch user and seller data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,13 +20,12 @@ export default function Settings() {
         const userData = await userRes.json();
         const sellerData = await sellerRes.json();
 
-        if (userRes.ok) setUser(userData);
-        if (sellerRes.ok) setSeller(sellerData);
+        if (userRes.ok) setUser(userData || {});
+        if (sellerRes.ok) setSeller(sellerData || {});
       } catch (err) {
         console.error("Failed to fetch settings data:", err);
       }
     };
-
     fetchData();
   }, []);
 
@@ -48,37 +46,33 @@ export default function Settings() {
   const handleSaveProfile = async () => {
     setSaving(true);
     try {
-      const updatedLocation = user.addresses[0]
-        ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].zipCode}, ${user.addresses[0].country}`
-        : "";
+      const currentAddress = user.addresses?.[0] || {};
+      const updatedLocation = `${currentAddress.street || ""}, ${currentAddress.city || ""}, ${currentAddress.zipCode || ""}, ${currentAddress.country || ""}`;
 
-      // Save user fields
       const userRes = await fetch("http://localhost:5000/api/users/update", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: user.email,
+          email: user.email || "",
           profile: {
-            phone: user.profile.phone,
+            phone: user.profile?.phone || "",
             location: updatedLocation,
           },
         }),
       });
 
-      // Save seller fields
       const sellerRes = await fetch("http://localhost:5000/api/seller/update", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          storeName: seller.storeName,
-          storeDescription: seller.storeDescription,
+          storeName: seller.storeName || "",
+          storeDescription: seller.storeDescription || "",
         }),
       });
 
       if (!userRes.ok || !sellerRes.ok) throw new Error("Failed to save settings");
-
       setEditProfile(false);
     } catch (err) {
       console.error(err);
@@ -88,7 +82,7 @@ export default function Settings() {
     }
   };
 
-  const currentAddress = user.addresses[0] || {};
+  const currentAddress = user.addresses?.[0] || {};
   const locationString = `${currentAddress.street || ""}, ${currentAddress.city || ""}, ${currentAddress.zipCode || ""}, ${currentAddress.country || ""}`;
 
   return (
@@ -98,52 +92,48 @@ export default function Settings() {
       <div className="bg-white rounded-xl p-6 space-y-5">
         <h3 className="font-bold text-[#1D3557] border-b pb-2">Seller Profile</h3>
 
-        {/* Shop Name */}
         <div>
           <label>Shop Name</label>
           {editProfile ? (
             <input
               type="text"
-              value={seller.storeName}
+              value={seller.storeName || ""}
               onChange={(e) => setSeller({ ...seller, storeName: e.target.value })}
               className="border p-2 rounded w-full"
             />
           ) : (
-            <p>{seller.storeName}</p>
+            <p>{seller.storeName || "-"}</p>
           )}
         </div>
 
-        {/* Email */}
         <div>
           <label>Email</label>
           {editProfile ? (
             <input
               type="email"
-              value={user.email}
+              value={user.email || ""}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               className="border p-2 rounded w-full"
             />
           ) : (
-            <p>{user.email}</p>
+            <p>{user.email || "-"}</p>
           )}
         </div>
 
-        {/* Phone */}
         <div>
           <label>Phone Number</label>
           {editProfile ? (
             <input
               type="text"
-              value={user.profile.phone}
+              value={user.profile?.phone || ""}
               onChange={(e) => setUser({ ...user, profile: { ...user.profile, phone: e.target.value } })}
               className="border p-2 rounded w-full"
             />
           ) : (
-            <p>{user.profile.phone}</p>
+            <p>{user.profile?.phone || "-"}</p>
           )}
         </div>
 
-        {/* Location */}
         <div>
           <label>Location</label>
           {editProfile ? (
@@ -168,21 +158,20 @@ export default function Settings() {
               className="border p-2 rounded w-full"
             />
           ) : (
-            <p>{locationString}</p>
+            <p>{locationString || "-"}</p>
           )}
         </div>
 
-        {/* Shop Description */}
         <div>
           <label>Shop Description</label>
           {editProfile ? (
             <textarea
-              value={seller.storeDescription}
+              value={seller.storeDescription || ""}
               onChange={(e) => setSeller({ ...seller, storeDescription: e.target.value })}
               className="border p-2 rounded w-full"
             />
           ) : (
-            <p>{seller.storeDescription}</p>
+            <p>{seller.storeDescription || "-"}</p>
           )}
         </div>
 

@@ -39,5 +39,27 @@ const getBrowseListings = async () => {
   }));
 };
 
+const getRecentListings = async () => {
+  const listings = await Listing.find({
+    status: { $in: ["active", "Active"] },
+    stock: { $gt: 0 }
+  })
+    .sort({ createdAt: -1 })
+    .limit(8)
+    .populate("sellerId", "storeName ratings.average");
+
+  return listings.map((l) => ({
+    id: l._id,
+    name: l.title,
+    image: Array.isArray(l.images) && l.images.length ? l.images[0] : "",
+    price: l.price,
+    seller: {
+      name: l.sellerId?.storeName || "Unknown",
+      rating: l.sellerId?.ratings?.average ?? 0
+    },
+  }));
+
+};
+
 //export default { getListingStats };
-export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller };
+export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getRecentListings };

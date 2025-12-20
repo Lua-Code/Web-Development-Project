@@ -10,39 +10,38 @@ const LoginPage = () => {
 
     const navigate = useNavigate();
 
-    const handleLogin = async () => {
-        setError(null);
-        setLoading(true);
+const handleLogin = async () => {
+  setError(null);
+  setLoading(true);
 
-        try {
-            const res = await fetch("http://localhost:5000/api/auth/seller-login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                credentials: "include", // 🔑 session cookie
-                body: JSON.stringify({
-                    email, // backend expects email
-                    password
-                })
-            });
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/seller-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
 
-            const data = await res.json();
+    const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(data.message || "Login failed");
-            }
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
+    }
 
-            // login successful
-            console.log("Logged in:", data);
-            navigate("/");
+    if (data.isSeller) {
+      navigate("/");
+    } else {
+      navigate("/create-shop");
+    }
 
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
     return (
         <div>
@@ -102,22 +101,15 @@ const LoginPage = () => {
                     </button>
 
                     <p className="text-center text-sm">
-                        Don’t have a buyer account?{" "}
-                        <a 
-                        href = "" //link to buyer registration page
-                        className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
-                            Sign up as buyer
-                        </a>
-                    </p>
-
-                    <p className="text-center text-sm">
-                        Don’t have a seller account?{" "}
-                        <Link
+                        Don’t have an  account?{" "}
+                        <Link 
                         to="/register"
                         className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
-                            Sign up as seller
+                            Sign up!
                         </Link>
                     </p>
+
+
                 </div>
             </div>
         </div>

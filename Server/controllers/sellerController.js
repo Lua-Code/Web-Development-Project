@@ -116,4 +116,23 @@ const updateSellerProfile = async (req, res) => {
   }
 };
 
-export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile, updateSellerProfile };
+const createShop = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    if (!userId) return res.status(401).json({ message: "Not logged in" });
+
+    const { shopName, shopDescription } = req.body;
+    console.log("Creating shop with data:", req.body);
+    if (!shopName || !shopDescription) {
+      return res.status(400).json({ message: "Shop name and description are required" });
+    }
+
+    const newSeller = await sellerService.createSellerProfile(userId, shopName, shopDescription);
+    res.status(201).json(newSeller);
+  } catch (error) {
+    console.error("Error creating shop:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile, updateSellerProfile, createShop };
