@@ -137,7 +137,7 @@ function BrowsePage() {
                                                     cursor: "pointer",
                                                     fontWeight: "600"
                                                 }}>
-                                                    Place Order
+                                                    Add To Cart
                                                 </button>
                                             </div>
                                         </div>
