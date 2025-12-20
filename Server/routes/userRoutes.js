@@ -8,7 +8,7 @@ import * as userController from "../controllers/userController.js";
 //const {} = require("../controllers/userController");
 
 router.post("/register", async (req, res) => {
-   console.log("REQ BODY =>", req.body);
+  console.log("REQ BODY =>", req.body);
   try {
     const { name, email, password, confirmpassword } = req.body;
 
@@ -41,7 +41,6 @@ router.post("/register", async (req, res) => {
 
 router.get("/me", authMiddleware, userController.getCurrentUser);
 router.put("/update", authMiddleware, userController.updateUser);
-
 
 
 // Export router

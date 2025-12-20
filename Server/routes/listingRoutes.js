@@ -17,5 +17,11 @@ import * as listingController from "../controllers/listingController.js";
 // =======================
 router.get("/", listingController.getBrowseListings);
 
+// =======================
+// Buyer Product Page
+// GET /api/listings/:id
+// =======================
+router.get("/:id", listingController.getListingById);
+
 // Export router
 export default router;
