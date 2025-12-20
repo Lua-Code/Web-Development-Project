@@ -21,7 +21,8 @@ const UserSchema = new mongoose.Schema({
     lastName: String,
     avatar: String,
     phone: String,
-    bio: String
+    bio: String,
+    shippingAddress: String
   },
   addresses: [AddressSchema],
   isActive: { type: Boolean, default: true },
