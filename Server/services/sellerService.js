@@ -14,4 +14,16 @@ const updateSellerByUserId = async (userId, updates) => {
   return seller;
 };
 
-export default { updateSellerByUserId,getSellerByUserId };
+const createSellerProfile = async (userId, storeName, storeDescription) => {
+  if (!storeName) throw new Error("Store name is required");
+  const existing = await Seller.findOne({ userId });
+  if (existing) throw new Error("Seller profile already exists"); 
+  const seller = await Seller.create({ userId, storeName, storeDescription });
+  return seller;
+};
+
+const getSellerCount = async () => {
+  return await Seller.countDocuments();
+};
+
+export default { updateSellerByUserId,getSellerByUserId, createSellerProfile, getSellerCount };

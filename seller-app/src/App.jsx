@@ -16,6 +16,14 @@ import AddProductButton from "./Components/My Products/AddProductButton.jsx";
 
 
 
+import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
+import DashboardPage from './Pages/DashboardPage'
+import MyProductsPage from './Pages/MyProductsPage'
+import OrdersPage from './Pages/OrdersPage'
+import AnalyticsPage from './Pages/AnalyticsPage'
+import SettingsPage from './Pages/SettingsPage'
+import CreateShopPage from './Pages/CreateShopPage';
 
 
 
@@ -37,6 +45,10 @@ function App() {
           <Route path="/edit-product/:id" element={<EditProduct />} />
           <Route path="/add-listing" element={<AddProductButton />} />
 
+        <Route element = {<AuthLayout/>}>
+          <Route path="/login" element = {<LoginPage/>}/>
+          <Route path="/register" element = {<RegisterPage/>}/>
+          <Route path="/create-shop" element = {<CreateShopPage/>}/>
         </Route>
       </Routes>
     </Router>

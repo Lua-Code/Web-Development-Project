@@ -2,6 +2,45 @@ import { useState } from "react";
 import { Store, ArrowLeft } from "lucide-react";
 
 const LoginPage = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+const handleLogin = async () => {
+  setError(null);
+  setLoading(true);
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/seller-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
+    }
+
+    if (data.isSeller) {
+      navigate("/");
+    } else {
+      navigate("/create-shop");
+    }
+
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
     return (
         <div>
@@ -46,9 +85,15 @@ const LoginPage = () => {
                     </button>
 
                     <p className="text-center text-sm">
-                        Don’t have an account?{" "}
-                        <span className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">Sign up</span>
+                        Don’t have an  account?{" "}
+                        <Link 
+                        to="/register"
+                        className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
+                            Sign up!
+                        </Link>
                     </p>
+
+
                 </div>
             </div>
         </div>

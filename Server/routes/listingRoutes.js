@@ -16,6 +16,8 @@ import * as listingController from "../controllers/listingController.js";
 // GET /api/listings
 // =======================
 router.get("/", listingController.getBrowseListings);
+router.get("/recent", listingController.getRecentListings);
+router.get("/count", listingController.getListingCount);
 
 // Export router
 export default router;
