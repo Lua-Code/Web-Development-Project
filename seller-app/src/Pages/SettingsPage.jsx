@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
-import FieldArea from "../Components/Settings/FieldArea";
-import TextArea from "../Components/Settings/TextArea";
 
 export default function Settings() {
   const [user, setUser] = useState(null);
   const [seller, setSeller] = useState(null);
   const [editProfile, setEditProfile] = useState(false);
-  const [editShipping, setEditShipping] = useState(false);
   const [saving, setSaving] = useState(false);
+
+  const [backupUser, setBackupUser] = useState(null);
+  const [backupSeller, setBackupSeller] = useState(null);
 
   // Fetch user and seller data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [userRes, sellerRes] = await Promise.all([
-          fetch("http://localhost:5000/api/user/me", { credentials: "include" }),
+          fetch("http://localhost:5000/api/users/me", { credentials: "include" }),
           fetch("http://localhost:5000/api/seller/me", { credentials: "include" }),
         ]);
 
@@ -33,19 +33,36 @@ export default function Settings() {
 
   if (!user || !seller) return <div>Loading settings...</div>;
 
-  // Save profile info
+  const handleEditProfile = () => {
+    setBackupUser(JSON.parse(JSON.stringify(user)));
+    setBackupSeller(JSON.parse(JSON.stringify(seller)));
+    setEditProfile(true);
+  };
+
+  const handleCancelProfile = () => {
+    setUser(backupUser);
+    setSeller(backupSeller);
+    setEditProfile(false);
+  };
+
   const handleSaveProfile = async () => {
     setSaving(true);
     try {
+      const updatedLocation = user.addresses[0]
+        ? `${user.addresses[0].street}, ${user.addresses[0].city}, ${user.addresses[0].zipCode}, ${user.addresses[0].country}`
+        : "";
+
       // Save user fields
-      const userRes = await fetch("http://localhost:5000/api/user/update", {
+      const userRes = await fetch("http://localhost:5000/api/users/update", {
         method: "PUT",
         credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: user.email,
-          phone: user.phone,
-          name: user.name,
+          profile: {
+            phone: user.profile.phone,
+            location: updatedLocation,
+          },
         }),
       });
 
@@ -56,13 +73,11 @@ export default function Settings() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           storeName: seller.storeName,
-          description: seller.description,
+          storeDescription: seller.storeDescription,
         }),
       });
 
-      if (!userRes.ok || !sellerRes.ok) {
-        throw new Error("Failed to save settings");
-      }
+      if (!userRes.ok || !sellerRes.ok) throw new Error("Failed to save settings");
 
       setEditProfile(false);
     } catch (err) {
@@ -73,74 +88,131 @@ export default function Settings() {
     }
   };
 
-  // Save shipping info
-  const handleSaveShipping = async () => {
-    setSaving(true);
-    try {
-      const sellerRes = await fetch("http://localhost:5000/api/seller/update", {
-        method: "PUT",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          shippingAddress: seller.shippingAddress,
-          processingTime: seller.processingTime,
-        }),
-      });
-
-      if (!sellerRes.ok) throw new Error("Failed to save shipping settings");
-
-      setEditShipping(false);
-    } catch (err) {
-      console.error(err);
-      alert("Error saving shipping settings. Check console.");
-    } finally {
-      setSaving(false);
-    }
-  };
+  const currentAddress = user.addresses[0] || {};
+  const locationString = `${currentAddress.street || ""}, ${currentAddress.city || ""}, ${currentAddress.zipCode || ""}, ${currentAddress.country || ""}`;
 
   return (
     <div className="space-y-6 text-left">
-      <h2 className="text-xl font-bold text-[#1D3557] text-left">
-        Account Settings
-      </h2>
+      <h2 className="text-xl font-bold text-[#1D3557]">Account Settings</h2>
 
-      {/* ================= SELLER PROFILE ================= */}
       <div className="bg-white rounded-xl p-6 space-y-5">
-        <h3 className="font-bold text-[#1D3557] border-b pb-2">
-          Seller Profile
-        </h3>
+        <h3 className="font-bold text-[#1D3557] border-b pb-2">Seller Profile</h3>
 
-        <FieldArea label="Shop Name" value={seller.storeName} editing={editProfile} onChange={(v) => setSeller({ ...seller, storeName: v })} />
-        <FieldArea label="Email" value={user.email} editing={editProfile} onChange={(v) => setUser({ ...user, email: v })} />
-        <FieldArea label="Phone Number" value={user.phone} editing={editProfile} onChange={(v) => setUser({ ...user, phone: v })} />
-        <FieldArea label="Location" value={seller.location || ""} editing={editProfile} onChange={(v) => setSeller({ ...seller, location: v })} />
-        <TextArea label="Shop Description" value={seller.description} editing={editProfile} onChange={(v) => setSeller({ ...seller, description: v })} />
+        {/* Shop Name */}
+        <div>
+          <label>Shop Name</label>
+          {editProfile ? (
+            <input
+              type="text"
+              value={seller.storeName}
+              onChange={(e) => setSeller({ ...seller, storeName: e.target.value })}
+              className="border p-2 rounded w-full"
+            />
+          ) : (
+            <p>{seller.storeName}</p>
+          )}
+        </div>
 
-        <button 
-          onClick={editProfile ? handleSaveProfile : () => setEditProfile(true)}
-          className="mt-4 px-5 py-2 rounded-lg bg-[#457B9D] text-white  text-sm font-medium cursor-pointer"
-          disabled={saving}
-        >
-          {editProfile ? "Save Profile" : "Edit Profile"}
-        </button>
-      </div>
+        {/* Email */}
+        <div>
+          <label>Email</label>
+          {editProfile ? (
+            <input
+              type="email"
+              value={user.email}
+              onChange={(e) => setUser({ ...user, email: e.target.value })}
+              className="border p-2 rounded w-full"
+            />
+          ) : (
+            <p>{user.email}</p>
+          )}
+        </div>
 
-      {/* ================= SHIPPING SETTINGS ================= */}
-      <div className="bg-white rounded-xl p-6 space-y-5">
-        <h3 className="font-bold text-[#1D3557] border-b pb-2 ">
-          Shipping Settings
-        </h3>
+        {/* Phone */}
+        <div>
+          <label>Phone Number</label>
+          {editProfile ? (
+            <input
+              type="text"
+              value={user.profile.phone}
+              onChange={(e) => setUser({ ...user, profile: { ...user.profile, phone: e.target.value } })}
+              className="border p-2 rounded w-full"
+            />
+          ) : (
+            <p>{user.profile.phone}</p>
+          )}
+        </div>
 
-        <FieldArea label="Ship From Address" value={seller.shippingAddress || ""} editing={editShipping} onChange={(v) => setSeller({ ...seller, shippingAddress: v })} />
-        <FieldArea label="Typical Processing Time" value={seller.processingTime || ""} editing={editShipping} onChange={(v) => setSeller({ ...seller, processingTime: v })} />
+        {/* Location */}
+        <div>
+          <label>Location</label>
+          {editProfile ? (
+            <input
+              type="text"
+              value={locationString}
+              onChange={(e) => {
+                const parts = e.target.value.split(",").map((p) => p.trim());
+                setUser({
+                  ...user,
+                  addresses: [
+                    {
+                      ...currentAddress,
+                      street: parts[0] || "",
+                      city: parts[1] || "",
+                      zipCode: parts[2] || "",
+                      country: parts[3] || "",
+                    },
+                  ],
+                });
+              }}
+              className="border p-2 rounded w-full"
+            />
+          ) : (
+            <p>{locationString}</p>
+          )}
+        </div>
 
-        <button
-          onClick={editShipping ? handleSaveShipping : () => setEditShipping(true)}
-          className="mt-4 px-5 py-2 rounded-lg bg-[#457B9D] text-white text-sm font-medium cursor-pointer"
-          disabled={saving}
-        >
-          {editShipping ? "Save Shipping Settings" : "Edit Shipping Settings"}
-        </button>
+        {/* Shop Description */}
+        <div>
+          <label>Shop Description</label>
+          {editProfile ? (
+            <textarea
+              value={seller.storeDescription}
+              onChange={(e) => setSeller({ ...seller, storeDescription: e.target.value })}
+              className="border p-2 rounded w-full"
+            />
+          ) : (
+            <p>{seller.storeDescription}</p>
+          )}
+        </div>
+
+        <div className="flex gap-3 mt-4">
+          {!editProfile ? (
+            <button
+              onClick={handleEditProfile}
+              className="px-5 py-2 rounded-lg bg-[#457B9D] text-white text-sm font-medium cursor-pointer"
+            >
+              Edit Profile
+            </button>
+          ) : (
+            <>
+              <button
+                onClick={handleSaveProfile}
+                className="px-5 py-2 rounded-lg bg-[#1D3557] text-white text-sm font-medium cursor-pointer"
+                disabled={saving}
+              >
+                Save
+              </button>
+              <button
+                onClick={handleCancelProfile}
+                className="px-5 py-2 rounded-lg bg-gray-300 text-[#1D3557] text-sm font-medium cursor-pointer"
+                disabled={saving}
+              >
+                Cancel
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

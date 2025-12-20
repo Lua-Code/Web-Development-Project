@@ -19,8 +19,6 @@ function DashboardPage() {
         });
 
         const data = await res.json();
-        console.log("Dashboard data:", data);
-        console.log("seocnd array:", data.recentOrders[1]);
         if (!res.ok) throw new Error(data.message || "Failed to load dashboard");
 
         setStats(data.stats);
@@ -76,29 +74,32 @@ function DashboardPage() {
         <div className="bg-white rounded-xl p-6">
           <h3 className="mb-4 font-semibold text-lg text-[#1D3557]">Recent Orders</h3>
           <div className="space-y-4">
-            {recentOrders.map(order => (
+            {recentOrders.length > 0 ? recentOrders.map(order => (
               <RecentOrderItem
                 key={order.id}
-                product={order.product}
-                buyer={order.buyer}
+                buyer={"#"+ order.id}
                 price={order.total}
                 status={order.status}
               />
-            ))}
+            )) : (
+              <p>No recent orders</p>
+            )}
           </div>
         </div>
 
         <div className="bg-white rounded-xl p-6">
           <h3 className="mb-4 font-semibold text-lg text-[#1D3557]">Top Selling Products</h3>
           <div className="space-y-4">
-            {topProducts.map(p => (
+            {topProducts.length > 0 ? topProducts.map(p => (
               <TopSellingProductItem
                 key={p.id}
                 title={p.title}
                 sales={p.sales}
                 price={p.price}
               />
-            ))}
+            )) : (
+              <p>No top products</p>
+            )}
           </div>
         </div>
       </section>

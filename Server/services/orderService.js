@@ -20,6 +20,7 @@
 import Order from "../models/Order.js";
 import Listing from "../models/Listing.js";
 import userService from "../services/userService.js";
+import User from "../models/User.js";
 
 export const getOrderStatsBySeller = async (sellerId) => {
   const totalOrders = await Order.countDocuments({ sellerId });
@@ -106,22 +107,32 @@ const getRecentOrdersBySeller = async (sellerId, limit = 5) => {
   const orders = await Order.find({ sellerId })
     .sort({ createdAt: -1 })
     .limit(limit)
-    .populate("buyerId", "username")
     .populate("items.listingId", "title price");
 
-  return orders.map(order => ({
-    id: order._id,
-    buyer: userService.getUserProfile(order.buyerId)?.username || "Unknown",
-    total: order.total,
-    status: order.status,
-    createdAt: order.createdAt,
-    items: order.items.map(i => ({
-      title: i.listingId?.title,
-      quantity: i.quantity,
-      price: i.price,
-    })),
-  }));
+  const result = await Promise.all(
+    orders.map(async (order) => {
+      const buyerId = order.buyerId._id || order.buyerId;
+      const buyer = await User.findById(buyerId).select("username");
+
+      return {
+        id: order._id,
+        buyer: buyer?.username || "Unknown",
+        total: order.total,
+        status: order.status,
+        createdAt: order.createdAt,
+        items: order.items.map((i) => ({
+          title: i.listingId?.title,
+          quantity: i.quantity,
+          price: i.price,
+        })),
+      };
+    })
+  );
+
+  return result;
 };
+
+
 
 const getTopSellingProductsBySeller = async (sellerId) => {
   const orders = await Order.find({

@@ -100,4 +100,20 @@ const getCurrentSellerProfile = async (req, res) => {
   }
 };
 
-export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile };
+const updateSellerProfile = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const updatedSeller = await sellerService.updateSellerByUserId(userId, req.body);
+
+    if (!updatedSeller) {
+      return res.status(404).json({ message: "Seller not found" });
+    }
+
+    res.json(updatedSeller);
+  } catch (error) {
+    console.error("Error updating seller profile:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile, updateSellerProfile };

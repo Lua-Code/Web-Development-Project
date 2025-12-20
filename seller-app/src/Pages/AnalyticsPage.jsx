@@ -40,8 +40,8 @@ const AnalyticsPage = () => {
                 setCategories(
                     data.revenueByCategory.map((c) => ({
                         category: c.category,
-                        revenue: `$${c.revenue}`,
-                        percentage: c.percentage,
+                        revenue: `${c.revenue}`,
+                        percentage: c.revenue/data.sales.totalRevenue * 100,
                     }))
                 );
 
