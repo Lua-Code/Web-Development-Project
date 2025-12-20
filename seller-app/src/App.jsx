@@ -13,6 +13,8 @@ import OrdersPage from './Pages/OrdersPage'
 import AnalyticsPage from './Pages/AnalyticsPage'
 import SettingsPage from './Pages/SettingsPage'
 import CreateShopPage from './Pages/CreateShopPage';
+import EditProduct from './Pages/EditProduct';
+import AddProductButton from './Components/My Products/AddProductButton';
 
 
 

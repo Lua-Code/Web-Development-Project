@@ -1,4 +1,5 @@
 import Listing from "../models/Listing.js";
+import mongoose from "mongoose";
 
 const getListingsStatsBySeller = async (sellerId) => {
   const listings = await Listing.find({ sellerId });
@@ -68,5 +69,63 @@ const getListingCount = async () => {
   return count;
 };
 
+const fetchAll=async(req,res)=>{
+  try{const allListings=await Listing.find();
+    console.log("✅ Listing collection:", Listing.collection.name);
+
+  return allListings}
+  catch(err){
+    throw new Error("Error fetching listings"+err.message);
+  }
+};
+
+const fetchListById = async (id) => {
+  try {
+    const listing = await Listing.findById(id); 
+    return listing;
+  } catch (err) {
+    throw new Error("Error fetching listing: " + err.message);
+  }
+};
+
+const createNewListing = async (listingData) => {
+  try {
+    console.log("Creating listing with data:", listingData);
+    const newListing = new Listing(listingData); 
+    await newListing.save(); 
+    return newListing;
+  } catch (err) {
+    throw new Error("Error creating listing: " + err.message);
+  }
+};
+
+const updateListing = async (id, updatedData) => {
+  try {
+    const updatedListing = await Listing.findByIdAndUpdate(id, updatedData, { new: true }); 
+    return updatedListing;
+  } catch (err) {
+    throw new Error("Error updating listing: " + err.message);
+  }
+};
+
+const deleteListing = async (id, sellerId) => {
+  try {
+    return await Listing.findOneAndDelete({ _id: id, sellerId });
+  } catch (err) {
+    throw new Error("Error deleting listing: " + err.message);
+  }
+};
+
+
+const getListingsBySellerId = async (sellerId) => {
+  try {
+    const listings = await Listing.find({ sellerId });
+    return listings;
+  } catch (err) {
+    throw new Error("Error fetching listings by seller: " + err.message);
+  }
+};
+
+
 //export default { getListingStats };
-export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getRecentListings, getListingCount };
+export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getRecentListings, getListingCount, fetchAll, fetchListById, createNewListing, updateListing, deleteListing, getListingsBySellerId };

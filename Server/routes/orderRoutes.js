@@ -5,13 +5,30 @@ const router = express.Router();
 //added////////////
 
 import authMiddleware from "../middleware/authMiddleware.js";
-import { getMyOrders, createMyOrder } from "../controllers/orderController.js";
+import {
+    getMyOrders,
+    createMyOrder,
+    getOrders,
+    getOrderById,
+    createOrder,
+    updateOrder,
+    deleteOrder,
+    updateOrderStatus,
+    getOrdersSeller
+} from "../controllers/orderController.js";
 
 // MyOrders (must be logged in)
 router.get("/", authMiddleware, getMyOrders);
 
 // Checkout -> create order (must be logged in)
 router.post("/", authMiddleware, createMyOrder);
+
+router.get("/me", getOrdersSeller);
+router.patch("/:id/status", updateOrderStatus);
+router.get("/:id", getOrderById);
+router.post("/", createOrder);
+router.put("/:id", updateOrder);
+router.delete("/:id", deleteOrder);
 
 
 // Export router

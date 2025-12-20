@@ -11,7 +11,7 @@ const ListingSchema = new mongoose.Schema({
   condition: String, // new, used, refurbished
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
-  status : { type: String, enum: ["active", "inactive", "sold"], default: "active" }
+  status : { type: String, enum: ["Active", "Inactive", "Sold"], default: "Active" }
 });
 
 export default mongoose.model("Listing", ListingSchema);

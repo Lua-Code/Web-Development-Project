@@ -165,9 +165,104 @@ const getTopSellingProductsBySeller = async (sellerId) => {
     .slice(0, 5);
 };
 
+const fetchAllOrders = async (query = {}) => {
+  const filter = {};
+  if (query.sellerId) filter.sellerId = query.sellerId;
+  if (query.buyerId) filter.buyerId = query.buyerId;
+  if (query.status) filter.status = query.status;
+
+  return Order.find(filter).sort({ createdAt: -1 });
+};
+
+const fetchOrderById = async (id) => {
+  return Order.findById(id);
+};
+
+const createNewOrder = async (data) => {
+  if (!data || !data.buyerId || !data.sellerId) {
+    throw new Error("buyerId and sellerId are required");
+  }
+
+  const items = Array.isArray(data.items) ? data.items : [];
+  if (items.length === 0) {
+    throw new Error("items are required");
+  }
+
+  const total = items.reduce((sum, item) => {
+    const price = Number(item.price) || 0;
+    const quantity = Number(item.quantity) || 0;
+    return sum + price * quantity;
+  }, 0);
+
+  const orderData = {
+    buyerId: data.buyerId,
+    sellerId: data.sellerId,
+    items: items.map((i) => ({
+      listingId: i.listingId,
+      title: i.title,
+      price: Number(i.price) || 0,
+      quantity: Number(i.quantity) || 0,
+    })),
+    total,
+    status: data.status || "pending",
+  };
+
+  return Order.create(orderData);
+};
+
+const updateOrderById = async (id, data) => {
+  if (!data) data = {};
+
+  const update = { ...data };
+
+  if (Array.isArray(update.items)) {
+    const total = update.items.reduce((sum, item) => {
+      const price = Number(item.price) || 0;
+      const quantity = Number(item.quantity) || 0;
+      return sum + price * quantity;
+    }, 0);
+    update.total = total;
+  }
+
+  return Order.findByIdAndUpdate(id, update, { new: true, runValidators: true });
+};
+
+const updateStatus = async (id, status) => {
+  const allowed = ["pending", "shipped", "delivered"];
+  const next = String(status || "").toLowerCase();
+  if (!allowed.includes(next)) {
+    throw new Error("invalid status");
+  }
+  return Order.findByIdAndUpdate(id, { status: next }, { new: true, runValidators: true });
+};
+
+const deleteOrderById = async (id) => {
+  return Order.findByIdAndDelete(id);
+};
+
+const getOrdersForSeller = async (sellerId) => {
+  try {
+    const orders = await Order.find({ sellerId })
+      .sort({ createdAt: -1 })
+      .populate("items.listingId", "images")
+      .lean();
+    return orders;
+  } catch (err) {
+    throw new Error("Error fetching orders for seller: " + err.message);
+  }
+};
+
+
 export default {
   getOrderStatsBySeller, getOrdersForBuyer, createOrderForBuyer,
   getPendingOrderCountBySeller,
   getRecentOrdersBySeller,
   getTopSellingProductsBySeller,
+  fetchAllOrders,
+  fetchOrderById,
+  createNewOrder,
+  updateOrderById,
+  updateStatus,
+  deleteOrderById,
+  getOrdersForSeller
 };

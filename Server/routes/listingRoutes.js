@@ -15,9 +15,14 @@ import * as listingController from "../controllers/listingController.js";
 // Buyer Browse Page
 // GET /api/listings
 // =======================
-router.get("/", listingController.getBrowseListings);
+router.get("/browse", listingController.getBrowseListings);
 router.get("/recent", listingController.getRecentListings);
 router.get("/count", listingController.getListingCount);
 
+router.get("/me", listingController.getMyListings);
+router.get("/:id", listingController.getListingById); 
+router.post("/", listingController.createListing);
+router.put("/:id", listingController.updateListing); 
+router.delete("/:id", listingController.deleteListing);
 // Export router
 export default router;

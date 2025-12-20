@@ -12,7 +12,8 @@ const app = express();
 // Middleware
 app.use(morgan("dev"));      
 app.use(cors({ origin: true, credentials: true }));          
-app.use(express.json());    
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));    
 app.use(session({
   secret: "meowSecret", 
   resave: false,
