@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
-//const {} = require("../controllers/transactionController");
 
-// Export router
+import authMiddleware from "../middleware/authMiddleware.js";
+import { checkout } from "../controllers/transactionController.js";
+
+// POST /api/transactions/checkout
+router.post("/checkout", authMiddleware, checkout);
+
 export default router;
