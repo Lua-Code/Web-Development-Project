@@ -4,11 +4,11 @@ import bcryptjs from "bcryptjs";
 import User from "../models/User.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
-import { getProfile, updateProfile } from "../controllers/userController.js";
+// import { getProfile, updateProfile } from "../controllers/userController.js";
 //const {} = require("../controllers/userController");
 
 router.post("/register", async (req, res) => {
-   console.log("REQ BODY =>", req.body);
+  console.log("REQ BODY =>", req.body);
   try {
     const { name, email, password, confirmpassword } = req.body;
 
@@ -39,9 +39,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-router.get("/profile", authMiddleware, getProfile);
-router.put("/profile", authMiddleware, updateProfile);
-router.get("/me", authMiddleware, getProfile);
+// router.get("/profile", authMiddleware, getProfile);
+// router.put("/profile", authMiddleware, updateProfile);
+// router.get("/me", authMiddleware, getProfile);
 
 
 // Export router

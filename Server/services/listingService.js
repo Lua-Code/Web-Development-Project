@@ -40,4 +40,29 @@ const getBrowseListings = async () => {
 };
 
 //export default { getListingStats };
-export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller };
+// Buyer Product Page: get single listing by ID
+const getListingById = async (listingId) => {
+  const listing = await Listing.findById(listingId)
+    .populate("sellerId", "storeName ratings");
+
+  if (!listing) return null;
+
+  return {
+    id: listing._id,
+    title: listing.title,
+    description: listing.description,
+    price: listing.price,
+    images: listing.images,
+    stock: listing.stock,
+    condition: listing.condition,
+    category: listing.categoryId, 
+    seller: {
+      id: listing.sellerId._id,
+      name: listing.sellerId.storeName,
+      rating: listing.sellerId.ratings?.average ?? 0,
+    },
+    status: listing.status,
+  };
+};
+
+export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getListingById };
