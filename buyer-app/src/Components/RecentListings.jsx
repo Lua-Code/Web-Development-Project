@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function RecentListings() {
   const [listings, setListings] = useState([]);
@@ -35,9 +36,11 @@ export default function RecentListings() {
             <h2 className="text-[#1d3557] mb-2 text-2xl font-bold">Recent Listings</h2>
             <p className="text-[#457b9d]">Fresh items from our sellers</p>
           </div>
-          <button className="border border-[#457b9d] text-[#457b9d] px-4 py-2 rounded hover:bg-[#457b9d] hover:text-white">
+          <Link
+          to="/marketplace"
+           className="border border-[#457b9d] text-[#457b9d] px-4 py-2 rounded hover:bg-[#457b9d] hover:text-white cursor-pointer transition">
             Browse All Items
-          </button>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

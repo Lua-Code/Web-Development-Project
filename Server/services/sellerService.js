@@ -22,5 +22,8 @@ const createSellerProfile = async (userId, storeName, storeDescription) => {
   return seller;
 };
 
+const getSellerCount = async () => {
+  return await Seller.countDocuments();
+};
 
-export default { updateSellerByUserId,getSellerByUserId, createSellerProfile };
+export default { updateSellerByUserId,getSellerByUserId, createSellerProfile, getSellerCount };

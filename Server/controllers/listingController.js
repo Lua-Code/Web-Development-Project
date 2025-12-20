@@ -25,3 +25,14 @@ export const getRecentListings = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getListingCount = async (req, res) => {
+  try {
+    const count = await listingService.getListingCount();
+    return res.json({ totalListings: count });
+  } 
+  catch (error) {
+    console.error("Error fetching listing count:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};

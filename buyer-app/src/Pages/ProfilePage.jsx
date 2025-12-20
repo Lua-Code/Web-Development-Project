@@ -1,18 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Profile() {
-  const [user, setUser] = useState({
-    name: "Pavly",
-    email: "bavlysedhom@gmail.com",
-    password: "123456-Pavly",
-    shippingAddress: "106 Tomanbai",
-  });
-
+  const [user, setUser] = useState(null);
   const [edit, setEdit] = useState(false);
   const [backup, setBackup] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch user profile on mount
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/users/me", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || "Failed to fetch profile");
+        setUser(data);
+      } catch (err) {
+        console.error(err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, []);
 
   const handleChange = (e) =>
     setUser({ ...user, [e.target.name]: e.target.value });
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/users/update", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(user),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to save profile");
+      setEdit(false);
+      setBackup(null);
+      setUser(data); // update with latest from server
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  if (loading) return <div>Loading profile...</div>;
+  if (error) return <div className="text-red-500">{error}</div>;
+  if (!user) return null;
 
   return (
     <div style={{ background: "#F1FAEE", minHeight: "100vh", padding: "40px" }}>
@@ -47,7 +90,7 @@ function Profile() {
             <input
               type={field === "password" ? "password" : "text"}
               name={field}
-              value={user[field]}
+              value={user[field] || ""}
               disabled={!edit}
               onChange={handleChange}
               style={{
@@ -82,10 +125,7 @@ function Profile() {
         ) : (
           <div style={{ display: "flex", gap: "10px" }}>
             <button
-              onClick={() => {
-                setEdit(false);
-                setBackup(null);
-              }}
+              onClick={handleSave}
               style={{
                 background: "#1D3557",
                 color: "#F1FAEE",
@@ -95,8 +135,9 @@ function Profile() {
                 cursor: "pointer",
                 fontWeight: "600",
               }}
+              disabled={saving}
             >
-              Save
+              {saving ? "Saving..." : "Save"}
             </button>
 
             <button

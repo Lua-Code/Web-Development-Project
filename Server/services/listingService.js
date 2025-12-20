@@ -61,5 +61,12 @@ const getRecentListings = async () => {
 
 };
 
+const getListingCount = async () => {
+  const count = await Listing.countDocuments({
+    status: { $in: ["active", "Active"] },
+  });
+  return count;
+};
+
 //export default { getListingStats };
-export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getRecentListings };
+export default { getListingsStatsBySeller, getBrowseListings, getActiveListingsCountBySeller, getRecentListings, getListingCount };

@@ -135,4 +135,14 @@ const createShop = async (req, res) => {
   }
 };
 
-export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile, updateSellerProfile, createShop };
+const getSellerCount = async (req, res) => {
+  try {
+    const count = await sellerService.getSellerCount();
+    res.json({ count });
+  } catch (error) {
+    console.error("Error fetching seller count:", error);
+    res.status(500).json({ message: "Server error" });
+  } 
+};
+
+export { getSellerAnalytics, getSellerDashboard, getCurrentSellerProfile, updateSellerProfile, createShop, getSellerCount };
