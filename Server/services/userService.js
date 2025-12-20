@@ -35,6 +35,7 @@ const updateUser = async (userId, updates) => {
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
 
+  // remove password field if sent
   delete updates.password;
 
   // handle nested profile
@@ -42,14 +43,14 @@ const updateUser = async (userId, updates) => {
     Object.keys(updates.profile).forEach((key) => {
       user.profile[key] = updates.profile[key];
     });
-    user.markModified("profile"); 
+    user.markModified("profile");
   }
 
   // handle top-level updates
   Object.keys(updates).forEach((key) => {
     if (key !== "profile") {
       user[key] = updates[key];
-      if (Array.isArray(user[key])) user.markModified(key); 
+      if (Array.isArray(user[key])) user.markModified(key);
     }
   });
 
@@ -79,3 +80,7 @@ export default {
   updateUser,
   deleteUser
 };
+
+
+
+
