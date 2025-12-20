@@ -8,11 +8,11 @@ import * as userController from "../controllers/userController.js";
 //const {} = require("../controllers/userController");
 
 router.post("/register", async (req, res) => {
-   console.log("REQ BODY =>", req.body);
+  console.log("REQ BODY =>", req.body);
   try {
-    const { name, email, password, confirmpassword } = req.body;
+    const { username, email, password, confirmpassword } = req.body;
 
-    if (!name || !email || !password || !confirmpassword)
+    if (!username || !email || !password || !confirmpassword)
       return res.status(400).json({ message: "All fields required" });
 
     if (password !== confirmpassword)
@@ -25,7 +25,7 @@ router.post("/register", async (req, res) => {
     const hashedPassword = await bcryptjs.hash(password, 10);
 
     const user = new User({
-      name,
+      username,
       email,
       password: hashedPassword
     });
