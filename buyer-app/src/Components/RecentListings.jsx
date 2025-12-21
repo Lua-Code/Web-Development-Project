@@ -1,17 +1,39 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 export default function RecentListings() {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const addToCart = async (listingId, quantity = 1) => {
+    try {
+      const res = await fetch(`${API_URL}/api/cart`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId: listingId, quantity }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || "Failed to add to cart");
+      }
+
+      alert("Added to cart!");
+    } catch (err) {
+      alert(`Error: ${err.message}`);
+    }
+  };
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch("http://localhost:5000/api/Listings/recent");
+        const res = await fetch(`${API_URL}/api/listings/recent`, { credentials: "include" });
         if (!res.ok) throw new Error("Failed to fetch Listings");
         const data = await res.json();
         setListings(data);
@@ -37,25 +59,27 @@ export default function RecentListings() {
             <p className="text-[#457b9d]">Fresh items from our sellers</p>
           </div>
           <Link
-          to="/marketplace"
-           className="border border-[#457b9d] text-[#457b9d] px-4 py-2 rounded hover:bg-[#457b9d] hover:text-white cursor-pointer transition">
+            to="/marketplace"
+            className="border border-[#457b9d] text-[#457b9d] px-4 py-2 rounded hover:bg-[#457b9d] hover:text-white cursor-pointer transition"
+          >
             Browse All Items
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {listings.map((product) => (
-            <div key={product._id} className="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
+            <div key={product.id} className="border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition">
               <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
               <div className="p-4">
                 <h3 className="text-[#1d3557] font-semibold">{product.name}</h3>
-                <p className="text-[#457b9d] text-sm">{product.condition}</p>
+                <p className="text-[#457b9d] text-sm">{product.condition || "N/A"}</p>
                 <p className="text-[#e63946] font-bold mt-1">${product.price.toFixed(2)}</p>
                 <p className="text-[#457b9d] text-xs mt-2">
-                  Seller: {product.seller.name} ({product.seller.rating}⭐) - {product.seller.location}
+                  Seller: {product.seller.name} ({product.seller.rating}⭐)
                 </p>
+
                 <button
-                  onClick={() => console.log("Order placed for:", product.name)}
+                  onClick={() => addToCart(product.id)}
                   className="mt-4 w-full bg-[#457b9d] text-white py-2 rounded hover:bg-[#1d3557] cursor-pointer transition"
                 >
                   Add to Cart

@@ -62,7 +62,7 @@ function BrowsePage() {
             });
 
             if (!res.ok) {
-                const errData = await res.json();
+                const errData = await res.json().catch(() => ({}));
                 throw new Error(errData.message || "Failed to add to cart");
             }
 

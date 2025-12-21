@@ -4,8 +4,9 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import session from "express-session";  
-
+import transactionRoutes from "./routes/transactionRoutes.js";
 import routes from "./routes/index.js"; // Mainline routes
+import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
 
@@ -32,6 +33,10 @@ app.get("/products", (req, res) => {
 // Buyer app compatibility: allow /orders without /api
 app.use("/orders", orderRoutes);
 
+// Buyer app compatibility: allow /cart without /api
+app.use("/cart", cartRoutes);
+
+app.use("/transactions", transactionRoutes);
 
 //mount Mainline route
 app.use("/api", routes); 
