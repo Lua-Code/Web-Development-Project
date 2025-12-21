@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 const RegisterPage = () => {
@@ -6,6 +7,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpassword, setConfirmpassword] = useState("");
+  const navigate = useNavigate();
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +23,9 @@ const RegisterPage = () => {
       const data = await res.json();
       console.log(data);
       alert(data.message);
+      if (res.ok) {
+        navigate("/");
+      }
     } catch (err) {
       console.error(err);
       alert("Network error");
