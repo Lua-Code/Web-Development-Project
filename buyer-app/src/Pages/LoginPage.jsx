@@ -91,9 +91,6 @@ const LoginPage = () => {
                         <p className="text-red-500 text-sm text-left">{error}</p>
                     )}
 
-                    <button className="text-[#e53948] hover:text-[#ec606c] text-sm text-left cursor-pointer">
-                        Forgot password?
-                    </button>
 
                     <button
                         onClick={handleLogin}
@@ -106,7 +103,7 @@ const LoginPage = () => {
                     <p className="text-center text-sm">
                         Don’t have a buyer account?{" "}
                         <Link 
-                        href = "/register"
+                        to="/register"
                         className="text-[#e53948] hover:text-[#ec606c] cursor-pointer">
                             Sign up as buyer
                         </Link>
