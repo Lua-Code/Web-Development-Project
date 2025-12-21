@@ -251,8 +251,18 @@ const getOrdersForSeller = async (sellerId) => {
     throw new Error("Error fetching orders for seller: " + err.message);
   }
 };
-
-
+const updateOrderComment = async (orderId, comment) => {
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      orderId,
+      { Comment: comment },
+      { new: true, runValidators: true }
+    );
+    return updatedOrder;
+  } catch (error) {
+    throw new Error("Error updating order comment: " + error.message);
+  }
+};
 export default {
   getOrderStatsBySeller, getOrdersForBuyer, createOrderForBuyer,
   getPendingOrderCountBySeller,
@@ -264,5 +274,6 @@ export default {
   updateOrderById,
   updateStatus,
   deleteOrderById,
-  getOrdersForSeller
+  getOrdersForSeller,
+  updateOrderComment
 };

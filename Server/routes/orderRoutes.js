@@ -14,7 +14,8 @@ import {
     updateOrder,
     deleteOrder,
     updateOrderStatus,
-    getOrdersSeller
+    getOrdersSeller,
+    updateOrderComment
 } from "../controllers/orderController.js";
 
 // MyOrders (must be logged in)
@@ -29,6 +30,7 @@ router.get("/:id", getOrderById);
 router.post("/", createOrder);
 router.put("/:id", updateOrder);
 router.delete("/:id", deleteOrder);
+router.put("/:id/comment", updateOrderComment);
 
 
 // Export router

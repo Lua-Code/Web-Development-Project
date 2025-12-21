@@ -14,7 +14,8 @@ const OrderSchema = new mongoose.Schema({
   total: Number,
   status: { type: String, default: "pending" }, // pending, shipped, delivered
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
+  Comment: String
 });
 
 export default mongoose.model("Order", OrderSchema);

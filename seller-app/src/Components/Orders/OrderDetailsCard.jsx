@@ -65,6 +65,10 @@ function OrderDetailsCard({ order, onStatusChanged }) {
         <strong>Status: {Orderstatus}</strong>
       </p>
 
+      <p>
+        <strong>Comment: {order.Comment}</strong>
+      </p>
+
       <div className="status-badge-container">
         <span className={`status-badge ${String(Orderstatus).toLowerCase()}`}>
           {Orderstatus}

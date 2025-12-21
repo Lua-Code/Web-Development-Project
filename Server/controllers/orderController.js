@@ -107,5 +107,19 @@ const getOrdersSeller = async (req, res) => {
   }
 };
 
+const updateOrderComment = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { comment } = req.body;
+    const updatedOrder = await orderService.updateOrderComment(id, comment);
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    console.error("Error updating order comment:", error);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
-export { getMyOrders, createMyOrder, getOrders, getOrderById, createOrder, updateOrder, deleteOrder, updateOrderStatus, getOrdersSeller };
+export { getMyOrders, createMyOrder, getOrders, getOrderById, createOrder, updateOrder, deleteOrder, updateOrderStatus, getOrdersSeller,updateOrderComment };
