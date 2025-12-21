@@ -35,21 +35,26 @@ const updateUser = async (userId, updates) => {
   const user = await User.findById(userId);
   if (!user) throw new Error("User not found");
 
-  delete updates.password;
+  // Handle password update if provided
+  if (updates.password) {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(updates.password, salt);
+    user.markModified("password");
+  }
 
   // handle nested profile
   if (updates.profile && typeof updates.profile === "object") {
     Object.keys(updates.profile).forEach((key) => {
       user.profile[key] = updates.profile[key];
     });
-    user.markModified("profile"); 
+    user.markModified("profile");
   }
 
   // handle top-level updates
   Object.keys(updates).forEach((key) => {
-    if (key !== "profile") {
+    if (key !== "profile" && key !== "password") {
       user[key] = updates[key];
-      if (Array.isArray(user[key])) user.markModified(key); 
+      if (Array.isArray(user[key])) user.markModified(key);
     }
   });
 

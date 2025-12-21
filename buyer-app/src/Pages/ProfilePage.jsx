@@ -17,7 +17,7 @@ function Profile() {
         });
         const data = await res.json();
         if (!res.ok) throw new Error(data.message || "Failed to fetch profile");
-        setUser(data);
+        setUser({ ...data, shippingAddress: data.profile?.shippingAddress });
       } catch (err) {
         console.error(err);
         setError(err.message);
@@ -38,13 +38,16 @@ function Profile() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          ...user,
+          profile: { ...user.profile, shippingAddress: user.shippingAddress },
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to save profile");
       setEdit(false);
       setBackup(null);
-      setUser(data); // update with latest from server
+      setUser({ ...data, shippingAddress: data.profile?.shippingAddress }); // update with latest from server
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -73,7 +76,7 @@ function Profile() {
           Profile
         </h1>
 
-        {["name", "email", "password", "shippingAddress"].map((field) => (
+        {["username", "email", "password", "shippingAddress"].map((field) => (
           <div key={field} style={{ marginBottom: "20px", textAlign: "left" }}>
             <label
               style={{
